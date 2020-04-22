@@ -12,9 +12,29 @@ ci_make_app(
     APP_NAME    cinder-myapp
     CINDER_PATH ${CINDER_PATH}
     SOURCES     ${SOURCE_LIST}
-    LIBRARIES   mylibrary
+    LIBRARIES   mylibrary eigen
     BLOCKS
 )
+
+ci_make_library(
+        LIBRARY_NAME mylibrary
+        CINDER_PATH ${CINDER_PATH}
+        SOURCES ${SOURCE_LIST}
+        INCLUDES "${FinalProject_SOURCE_DIR}/include"
+        LIBRARIES eigen
+)
+
+FetchContent_Declare(
+        eigen
+        GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
+)
+
+FetchContent_GetProperties(eigen)
+if (NOT eigen_POPULATED)
+    FetchContent_Populate(eigen)
+    add_library(eigen INTERFACE)
+    target_include_directories(eigen INTERFACE ${eigen_SOURCE_DIR})
+
 
 target_compile_features(cinder-myapp PRIVATE cxx_std_14)
 
