@@ -2,9 +2,8 @@
 
 #include <cinder/app/App.h>
 #include <cinder/app/RendererGl.h>
-
 #include "my_app.h"
-
+#include <Eigen/dense>
 
 using cinder::app::App;
 using cinder::app::RendererGl;
