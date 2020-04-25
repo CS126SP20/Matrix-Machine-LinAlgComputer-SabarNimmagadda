@@ -7,7 +7,13 @@
 
 
 namespace myapp {
-
+enum class AppState {
+    kSelecting,
+    kInputtingData,
+    kSolved,
+    kExplaining,
+    kDone,
+};
 class MyApp : public cinder::app::App {
  public:
   MyApp();
