@@ -21,6 +21,16 @@ class MyApp : public cinder::app::App {
   void update() override;
   void draw() override;
   void keyDown(cinder::app::KeyEvent) override;
+
+private:
+  void DrawErrorMessage();
+  void DrawMatrixAnswer();
+  void DrawVectorSpaceAnswer();
+  void DrawAfterMessage();
+  void DrawBackground() const;
+  void PrintText(const std::string& text, const cinder::Color color, const cinder::ivec2& size,
+                 const cinder::vec2& loc);
+  AppState state_;
 };
 
 }  // namespace myapp
