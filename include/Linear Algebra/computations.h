@@ -15,7 +15,9 @@ class Computations {
     void Input_Matrix(string input);
     static MatrixXd Compute_L(MatrixXd m);
     static MatrixXd Compute_U(MatrixXd m);
-    MatrixXd Compute_PermutationMatrix(MatrixXd m);
+    static MatrixXd Compute_PermutationMatrix(MatrixXd m);
+    static MatrixXd Compute_Inverse(MatrixXd m);
+    static MatrixXd Compute_RREF(MatrixXd m);
  private:
     MatrixXd in_matrix;
 

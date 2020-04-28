@@ -3,7 +3,7 @@
 #include "my_app.h"
 
 #include <cinder/app/App.h>
-#include <Eigen/dense>
+#include <Eigen/Dense>
 #include <cinder/gl/gl.h>
 #include <cinder/Font.h>
 #include <cinder/Text.h>
@@ -86,13 +86,18 @@ void MyApp::DrawMatrixAnswer() {
     const cinder::ivec2 size = {500, 500};
     const Color color = Color::white();
     std::stringstream ss;
+    Computations::Compute_PermutationMatrix(test_mat);
+    Computations::Compute_RREF(test_mat);
+    Computations::Compute_Inverse(test_mat);
     ss << Computations::Compute_L(test_mat);
     PrintText("Your L Matrix is",color,{500,500},{center.x-50,center.y - 50});
     PrintText(ss.str(), color, size , center);
-    ss << Computations::Compute_U(test_mat);
+    std::stringstream st;
+    st << Computations::Compute_U(test_mat);
     PrintText("Your U Matrix is",color,{500,500},{center.x-50,center.y + 100});
-    PrintText(ss.str(), color, size, {center.x, center.y + 150});
+    PrintText(st.str(), color, size, {center.x, center.y + 150});
 }
+
 
 
 
