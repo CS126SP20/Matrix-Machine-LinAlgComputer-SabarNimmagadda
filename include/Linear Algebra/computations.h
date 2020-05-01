@@ -22,7 +22,9 @@ public:
     static MatrixXd Compute_PermutationMatrix(MatrixXd m);
     static MatrixXd Compute_Inverse(MatrixXd m);
     static MatrixXd Compute_RREF(MatrixXd m);
+    static MatrixXd Compute_Multiply(MatrixXd m, MatrixXd n);
  private:
     MatrixXd in_matrix;
+    static bool is_valid_input;
 
 };

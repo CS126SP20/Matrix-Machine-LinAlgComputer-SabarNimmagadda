@@ -60,6 +60,15 @@ using std::string;
       return out;
   }
 
+  MatrixXd Computations::Compute_Multiply(MatrixXd m, MatrixXd n) {
+      if (m.cols() == n.rows()) {
+          return m*n;
+      } else {
+          is_valid_input = false;
+      }
+  }
+
+
 
 
 
