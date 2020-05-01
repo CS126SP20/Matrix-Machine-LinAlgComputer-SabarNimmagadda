@@ -1,6 +1,6 @@
 // Copyright (c) 2020 Sabar Nimmagadda. All rights reserved.
 
-#include "my_app.h"
+#include "matrix_app.h"
 
 #include <cinder/app/App.h>
 #include <Eigen/Dense>
@@ -12,10 +12,7 @@
 #include <Linear Algebra/computations.h>
 #include <iostream>
 using Eigen::MatrixXd;
-
-
-namespace myapp {
-
+namespace matrixapp {
 using cinder::app::KeyEvent;
 using cinder::Color;
 using cinder::ColorA;
@@ -25,16 +22,16 @@ using std::string;
 const char kNormalFont[] = "Arial";
 const char kBoldFont[] = "Arial Bold";
 
-MyApp::MyApp()
+MatrixApp::MatrixApp()
     : state_{AppState::kSelecting} {}
 
 
-void MyApp::setup() {
+void MatrixApp::setup() {
 }
 
-void MyApp::update() { }
+void MatrixApp::update() { }
 
-void MyApp::draw() {
+void MatrixApp::draw() {
     DrawBackground();
     const cinder::vec2 center = getWindowCenter();
     const cinder::ivec2 size = {500, 50};
@@ -47,15 +44,13 @@ void MyApp::draw() {
     }
 }
 
-void MyApp::keyDown(KeyEvent event) {
+void MatrixApp::keyDown(KeyEvent event) {
     if(event.getChar() == 'a') {
         state_ = AppState::kSolved;
     }
 }
 
-
-
-void MyApp::PrintText(const string& text, const Color color, const cinder::ivec2& size,
+void MatrixApp::PrintText(const string& text, const Color color, const cinder::ivec2& size,
                const cinder::vec2& loc) {
     cinder::gl::color(color);
     auto box = TextBox()
@@ -72,11 +67,11 @@ void MyApp::PrintText(const string& text, const Color color, const cinder::ivec2
     const auto texture = cinder::gl::Texture::create(surface);
     cinder::gl::draw(texture, locp);
 }
-void MyApp::DrawBackground() const {
+void MatrixApp::DrawBackground() const {
     cinder::gl::clear(Color(1, 0, 0));
 }
 
-void MyApp::DrawMatrixAnswer() {
+void MatrixApp::DrawMatrixAnswer() {
     typedef Eigen::Matrix<double, 3, 3 > M3X3;
     M3X3 test_mat;
     test_mat << 1, 2, 3,
@@ -97,9 +92,5 @@ void MyApp::DrawMatrixAnswer() {
     PrintText("Your U Matrix is",color,{500,500},{center.x-50,center.y + 100});
     PrintText(st.str(), color, size, {center.x, center.y + 150});
 }
-
-
-
-
 
 }  // namespace myapp

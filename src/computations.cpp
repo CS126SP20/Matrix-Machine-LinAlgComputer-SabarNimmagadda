@@ -32,24 +32,32 @@ using std::string;
   MatrixXd Computations::Compute_Inverse(MatrixXd m) {
       return m.inverse();
   }
+
   MatrixXd Computations::Compute_RREF(MatrixXd m) {
       int lead = 0;
+      MatrixXd out = m;
       while (lead < m.rows()) {
           float divisor, multiplier;
-          for (int row = 0; row <= m.rows(); row++) {
-              divisor = m(lead, lead); //What divides a cell to make its value = 1.
-              multiplier = m(row, lead)/ m(lead, lead); //What is multiplied to a cell, so that when it is subtracted the value becomes 0.
-              for(int col = 0; col <= m.cols(); col++) {
-                  if (lead == row) {
-                      m(row,col) / = divisor; //This makes the pivots = 1.
+          for (int r = 0; r < m.rows(); r++) {
+              if (out(lead, lead) != 0) {
+                  divisor = out(lead, lead); //What divides a cell to make its value = 1.
+                  multiplier = out(r, lead)/ out(lead, lead); //What is multiplied to a cell, so that when it is subtracted the value becomes 0.
+              } else {
+                  divisor = 1;
+                  multiplier = 1;
+              }
+              for(int c = 0; c < m.cols(); c++) {
+                  if (lead == r) {
+                      out(r,c) /= divisor;//This makes the pivots = 1.
                   } else {
-                      m(row,col) -= m(lead, col) * multiplier; //Making everything that is not a pivot = 0;
+                      out(r,c) -= out(lead, c) * multiplier; //Making everything that is not a pivot = 0;
                   }
               }
           }
           lead++;
       }
-      return m;
+      std::cout << out;
+      return out;
   }
 
 

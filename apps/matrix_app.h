@@ -6,7 +6,7 @@
 #include <cinder/app/App.h>
 
 
-namespace myapp {
+namespace matrixapp {
 enum class AppState {
     kSelecting,
     kInputtingData,
@@ -14,9 +14,9 @@ enum class AppState {
     kExplaining,
     kDone,
 };
-class MyApp : public cinder::app::App {
+class MatrixApp : public cinder::app::App {
  public:
-  MyApp();
+  MatrixApp();
   void setup() override;
   void update() override;
   void draw() override;

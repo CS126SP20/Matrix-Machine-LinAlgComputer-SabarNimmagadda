@@ -13,8 +13,9 @@ ci_make_app(
     CINDER_PATH ${CINDER_PATH}
     SOURCES     ${SOURCE_LIST}
     LIBRARIES   mylibrary eigen
-    BLOCKS
+    BLOCKS Cinder-ImGui
 )
+
 
 
 

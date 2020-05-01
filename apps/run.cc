@@ -2,14 +2,14 @@
 
 #include <cinder/app/App.h>
 #include <cinder/app/RendererGl.h>
-#include "my_app.h"
+#include "matrix_app.h"
 #include <Eigen/dense>
 
 using cinder::app::App;
 using cinder::app::RendererGl;
 
 
-namespace myapp {
+namespace matrixapp {
 
 const int kSamples = 8;
 const int kWidth = 800;
@@ -24,6 +24,6 @@ void SetUp(App::Settings* settings) {
 
 
 // This is a macro that runs the application.
-CINDER_APP(myapp::MyApp,
-           RendererGl(RendererGl::Options().msaa(myapp::kSamples)),
-           myapp::SetUp)
+CINDER_APP(matrixapp::MatrixApp,
+           RendererGl(RendererGl::Options().msaa(matrixapp::kSamples)),
+           matrixapp::SetUp)

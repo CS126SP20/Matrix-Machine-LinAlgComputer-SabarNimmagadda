@@ -8,10 +8,14 @@
 #endif //FINALPROJECT_COMPUTATIONS_H
 #include <Eigen/Dense>
 #include <Eigen/LU>
+#include <Eigen/src/Core/Matrix.h>
+
 using Eigen::MatrixXd;
 using std::string;
 class Computations {
- public:
+    //typedef Eigen::Matrix<double, 3, 3> Matrix3d;
+
+public:
     void Input_Matrix(string input);
     static MatrixXd Compute_L(MatrixXd m);
     static MatrixXd Compute_U(MatrixXd m);
