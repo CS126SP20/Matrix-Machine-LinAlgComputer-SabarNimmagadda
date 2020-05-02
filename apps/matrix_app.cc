@@ -11,6 +11,7 @@
 #include <cinder/gl/draw.h>
 #include <Linear Algebra/computations.h>
 #include <iostream>
+#include "CinderImGui.h"
 using Eigen::MatrixXd;
 namespace matrixapp {
 using cinder::app::KeyEvent;
@@ -27,9 +28,17 @@ MatrixApp::MatrixApp()
 
 
 void MatrixApp::setup() {
+    ui::initialize();
+
 }
 
-void MatrixApp::update() { }
+void MatrixApp::update() {
+    ui::Text("hello test");
+    ui::ScopedMainMenuBar menuBar;
+    if (ui::BeginMenu("Problems")) {
+        ui::MenuItem("RREF");
+    }
+}
 
 void MatrixApp::draw() {
     DrawBackground();

@@ -4,8 +4,7 @@
 #define FINALPROJECT_APPS_MYAPP_H_
 
 #include <cinder/app/App.h>
-
-
+using std::string;
 namespace matrixapp {
 enum class AppState {
     kSelecting,
@@ -31,6 +30,17 @@ private:
   void PrintText(const std::string& text, const cinder::Color color, const cinder::ivec2& size,
                  const cinder::vec2& loc);
   AppState state_;
+  std::vector<string> list_of_problems = {
+          "RREF",
+          "Row Space",
+          "Column Space",
+          "Null space",
+          "LU Decomposition",
+          "Permutation Matrix",
+          "Inverse",
+          "Matrix Multiplication"
+  };
+
 };
 
 }  // namespace myapp

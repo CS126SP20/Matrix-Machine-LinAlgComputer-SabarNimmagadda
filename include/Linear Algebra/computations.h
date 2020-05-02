@@ -24,6 +24,7 @@ public:
     static MatrixXd ComputeRREF(MatrixXd m);
     static MatrixXd ComputeMultiply(MatrixXd matrix1, MatrixXd matrix2);
     static MatrixXd ComputeRowSpace(MatrixXd matrix);
+    static MatrixXd ComputeColSpace(MatrixXd matrix);
  private:
     MatrixXd in_matrix;
 
