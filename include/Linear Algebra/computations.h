@@ -5,7 +5,7 @@
 #ifndef FINALPROJECT_COMPUTATIONS_H
 #define FINALPROJECT_COMPUTATIONS_H
 
-#endif //FINALPROJECT_COMPUTATIONS_H
+
 #include <Eigen/Dense>
 #include <Eigen/LU>
 #include <Eigen/src/Core/Matrix.h>
@@ -17,14 +17,15 @@ class Computations {
 
 public:
     void Input_Matrix(string input);
-    static MatrixXd Compute_L(MatrixXd m);
-    static MatrixXd Compute_U(MatrixXd m);
-    static MatrixXd Compute_PermutationMatrix(MatrixXd m);
-    static MatrixXd Compute_Inverse(MatrixXd m);
-    static MatrixXd Compute_RREF(MatrixXd m);
-    static MatrixXd Compute_Multiply(MatrixXd m, MatrixXd n);
+    static MatrixXd ComputeL(MatrixXd matrix);
+    static MatrixXd ComputeU(MatrixXd matrix);
+    static MatrixXd ComputePermutationMatrix(MatrixXd matrix);
+    static MatrixXd ComputeInverse(MatrixXd m);
+    static MatrixXd ComputeRREF(MatrixXd m);
+    static MatrixXd ComputeMultiply(MatrixXd matrix1, MatrixXd matrix2);
+    static MatrixXd ComputeRowSpace(MatrixXd matrix);
  private:
     MatrixXd in_matrix;
-    static bool is_valid_input;
 
 };
+#endif //FINALPROJECT_COMPUTATIONS_H

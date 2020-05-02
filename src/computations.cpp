@@ -8,7 +8,7 @@
 
 using Eigen::MatrixXd;
 using std::string;
-  MatrixXd Computations::Compute_L(MatrixXd m) {
+  MatrixXd Computations::ComputeL(MatrixXd m) {
      typedef Eigen::Matrix<double, 3, 3 > L_Matrix;
      Eigen::FullPivLU<L_Matrix> lu(m);
      //Since the L matrix is a square matrix with the rowsize of the original matrix.
@@ -16,24 +16,24 @@ using std::string;
      l.block<3,3>(0,0).triangularView<Eigen::StrictlyLower>() = lu.matrixLU();
      return l;
   }
-  MatrixXd Computations::Compute_U(MatrixXd m) {
+  MatrixXd Computations::ComputeU(MatrixXd m) {
      typedef Eigen::Matrix<double, 3, 3> U_Matrix;
      Eigen::FullPivLU<U_Matrix> lu(m);
      //Since the U matrix has the exact dimensions of the original matrix.
      U_Matrix u = lu.matrixLU().triangularView<Eigen::Upper>();
      return u;
   }
-  MatrixXd Computations::Compute_PermutationMatrix(MatrixXd m) {
+  MatrixXd Computations::ComputePermutationMatrix(MatrixXd m) {
       typedef Eigen::Matrix<double, 3, 3> P_Matrix;
       Eigen::FullPivLU<P_Matrix> lu(m);
       P_Matrix p = lu.matrixLU();
       return p;
   }
-  MatrixXd Computations::Compute_Inverse(MatrixXd m) {
+  MatrixXd Computations::ComputeInverse(MatrixXd m) {
       return m.inverse();
   }
 
-  MatrixXd Computations::Compute_RREF(MatrixXd m) {
+  MatrixXd Computations::ComputeRREF(MatrixXd m) {
       int lead = 0;
       MatrixXd out = m;
       while (lead < m.rows()) {
@@ -60,11 +60,9 @@ using std::string;
       return out;
   }
 
-  MatrixXd Computations::Compute_Multiply(MatrixXd m, MatrixXd n) {
+  MatrixXd Computations::ComputeMultiply(MatrixXd m, MatrixXd n) {
       if (m.cols() == n.rows()) {
           return m*n;
-      } else {
-          is_valid_input = false;
       }
   }
 
