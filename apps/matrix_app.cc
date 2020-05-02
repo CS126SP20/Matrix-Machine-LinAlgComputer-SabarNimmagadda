@@ -33,11 +33,25 @@ void MatrixApp::setup() {
 }
 
 void MatrixApp::update() {
-    ui::Text("hello test");
-    ui::ScopedMainMenuBar menuBar;
-    if (ui::BeginMenu("Problems")) {
-        ui::MenuItem("RREF");
+    ui::ScopedWindow window( "Choose problem", ImGuiWindowFlags_MenuBar );
+
+    // setup the window menu bar
+    if( ui::BeginMenuBar() ){
+        if( ui::BeginMenu( "Problem Type" ) ){
+            ui::MenuItem( "RREF" );
+            ui::MenuItem( "Row Space" );
+            ui::MenuItem( "Column Space");
+            ui::MenuItem("Null space");
+            ui::MenuItem("LU Decomposition");
+            ui::MenuItem( "Permutation Matrix");
+            ui::MenuItem( "Inverse");
+            ui::MenuItem( "Matrix Multiplication");
+            ui::EndMenu();
+        }
+        ui::EndMenuBar();
     }
+    const ImVec2 vec2(500, 500);
+    ui::SetWindowSize("Choose problem", vec2);
 }
 
 void MatrixApp::draw() {
