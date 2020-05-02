@@ -29,29 +29,13 @@ MatrixApp::MatrixApp()
 
 void MatrixApp::setup() {
     ui::initialize();
-
+    test_mat << 1, 2, 3,
+            4, 5, 6,
+            7, 8, 9;
 }
 
 void MatrixApp::update() {
-    ui::ScopedWindow window( "Choose problem", ImGuiWindowFlags_MenuBar );
 
-    // setup the window menu bar
-    if( ui::BeginMenuBar() ){
-        if( ui::BeginMenu( "Problem Type" ) ){
-            ui::MenuItem( "RREF" );
-            ui::MenuItem( "Row Space" );
-            ui::MenuItem( "Column Space");
-            ui::MenuItem("Null space");
-            ui::MenuItem("LU Decomposition");
-            ui::MenuItem( "Permutation Matrix");
-            ui::MenuItem( "Inverse");
-            ui::MenuItem( "Matrix Multiplication");
-            ui::EndMenu();
-        }
-        ui::EndMenuBar();
-    }
-    const ImVec2 vec2(500, 500);
-    ui::SetWindowSize("Choose problem", vec2);
 }
 
 void MatrixApp::draw() {
@@ -60,10 +44,40 @@ void MatrixApp::draw() {
     const cinder::ivec2 size = {500, 50};
     const Color color = Color::black();
     if (state_ == AppState::kSelecting) {
-        PrintText("Enter Matrix",color, size, center);
+        PrintText("WELCOME",color, size, {500,500});
+        ui::ScopedWindow window( "Choose problem", ImGuiWindowFlags_MenuBar );
+
+        // setup the window menu bar
+        if( ui::BeginMenuBar() ){
+            if( ui::BeginMenu( "Problem Type" )){
+                if (ui::MenuItem( "RREF" )) {
+                    //state_ == AppState::kInputtingData;
+                    //INput matrix;
+                    Computations::ComputeRREF(test_mat);
+                }
+                ui::MenuItem( "Row Space" );
+                ui::MenuItem( "Column Space");
+                ui::MenuItem("Null space");
+                if (ui::MenuItem("LU Decomposition")) {
+                    //state_ == AppState::kInputtingData;
+                    problem_type = 5;
+                    state_= AppState::kSolved;
+                }
+                ui::MenuItem( "Permutation Matrix");
+                ui::MenuItem( "Inverse");
+                ui::MenuItem( "Matrix Multiplication");
+                ui::EndMenu();
+            }
+            ui::EndMenuBar();
+        }
+
+        const ImVec2 vec2(500, 500);
+        ui::SetWindowSize("Choose problem", vec2);
     }
     if (state_ == AppState::kSolved) {
-        DrawMatrixAnswer();
+        if (problem_type == 5) {
+            DrawLUAnswer();
+        }
     }
 }
 
@@ -91,22 +105,13 @@ void MatrixApp::PrintText(const string& text, const Color color, const cinder::i
     cinder::gl::draw(texture, locp);
 }
 void MatrixApp::DrawBackground() const {
-    cinder::gl::clear(Color(1, 0, 0));
+    cinder::gl::clear(Color(0, 0, 0));
 }
-
-void MatrixApp::DrawMatrixAnswer() {
-    typedef Eigen::Matrix<double, 3, 3 > M3X3;
-    M3X3 test_mat;
-    test_mat << 1, 2, 3,
-            4, 5, 6,
-            7, 8, 9;
+void MatrixApp::DrawLUAnswer() {
     const cinder::vec2 center = getWindowCenter();
     const cinder::ivec2 size = {500, 500};
     const Color color = Color::white();
     std::stringstream ss;
-    Computations::ComputePermutationMatrix(test_mat);
-    Computations::ComputeRREF(test_mat);
-    Computations::ComputeInverse(test_mat);
     ss << Computations::ComputeL(test_mat);
     PrintText("Your L Matrix is",color,{500,500},{center.x-50,center.y - 50});
     PrintText(ss.str(), color, size , center);

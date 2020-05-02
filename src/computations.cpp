@@ -56,7 +56,6 @@ using std::string;
           }
           lead++;
       }
-      std::cout << out;
       return out;
   }
 

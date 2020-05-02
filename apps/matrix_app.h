@@ -4,7 +4,9 @@
 #define FINALPROJECT_APPS_MYAPP_H_
 
 #include <cinder/app/App.h>
+#include <Eigen/Dense>
 using std::string;
+using Eigen::MatrixXd;
 namespace matrixapp {
 enum class AppState {
     kSelecting,
@@ -23,7 +25,11 @@ class MatrixApp : public cinder::app::App {
 
 private:
   void DrawErrorMessage();
-  void DrawMatrixAnswer();
+  void DrawLUAnswer();
+  void DrawPermutationAnswer();
+  void DrawRREFAnswer();
+  void DrawMultiplicationAnswer();
+  void DrawInverseAnswer();
   void DrawVectorSpaceAnswer();
   void DrawAfterMessage();
   void DrawBackground() const;
@@ -40,7 +46,9 @@ private:
           "Inverse",
           "Matrix Multiplication"
   };
-
+    typedef Eigen::Matrix<double, 3, 3 > M3X3;
+    M3X3 test_mat;
+    int problem_type;
 };
 
 }  // namespace myapp
