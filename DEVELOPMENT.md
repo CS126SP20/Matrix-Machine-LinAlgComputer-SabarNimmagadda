@@ -5,7 +5,9 @@
     - Need to make size dynamic and figure out how to implement matrix inputting.
 - **4.28.20** - Worked on the front end.
     - Still need to understand how I will create a list of problems for the user to choose from. 
-    - Found out I need to use ImGui for the UI.  
+    - Found out I need to use ImGui for the UI.
+    
+DID ALOT MAY 2nd from menu to beginning input.  
 
 
 ---

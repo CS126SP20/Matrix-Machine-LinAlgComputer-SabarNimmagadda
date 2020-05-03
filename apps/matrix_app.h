@@ -25,7 +25,7 @@ class MatrixApp : public cinder::app::App {
 
 private:
   void DrawErrorMessage();
-  void DrawLUAnswer(MatrixXd matrix);
+  void DrawLUAnswer(const MatrixXd& matrix);
   void DrawPermutationAnswer(MatrixXd matrix);
   void DrawRREFAnswer(MatrixXd matrix);
   void DrawMultiplicationAnswer(MatrixXd matrix1, MatrixXd matrix2);
@@ -51,9 +51,12 @@ private:
     typedef Eigen::Matrix<double, 3, 3 > M3X3;
     M3X3 test_mat;
     int problem_type;
-    char inputBuf[256];
+    char inputBuf1[9];
+    char inputBuf2[9];
     M3X3 in_mat1;
     M3X3 in_mat2;
+    std::string input_string = "";
+    std::string input_string2 = "";
     std::string str_mat;
     std::string str_mat2;
 };

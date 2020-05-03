@@ -11,6 +11,7 @@
 #include <cinder/gl/draw.h>
 #include <Linear Algebra/computations.h>
 #include <iostream>
+#include <utility>
 #include "CinderImGui.h"
 using Eigen::MatrixXd;
 namespace matrixapp {
@@ -35,7 +36,7 @@ void MatrixApp::setup() {
 }
 
 void MatrixApp::update() {
-    string input = reinterpret_cast<const char *>(ui::InputText("Input", inputBuf, IM_ARRAYSIZE(inputBuf)));
+
 }
 
 void MatrixApp::draw() {
@@ -77,14 +78,14 @@ void MatrixApp::draw() {
     if (state_ == AppState::kInputtingData) {
         InputMatrix();
         String_To_Matrix();
-        state_ = AppState::kSolved;
+        //state_ = AppState::kSolved;
     }
     if (state_ == AppState::kSolved) {
         if (problem_type == 5) {
             DrawLUAnswer(in_mat1);
         }
         if (problem_type == 6) {
-            DrawPermutationAnswer(in_mat2);
+            DrawPermutationAnswer(in_mat1);
         }
     }
 }
@@ -115,7 +116,7 @@ void MatrixApp::PrintText(const string& text, const Color color, const cinder::i
 void MatrixApp::DrawBackground() const {
     cinder::gl::clear(Color(0, 0, 0));
 }
-void MatrixApp::DrawLUAnswer(MatrixXd matrix) {
+void MatrixApp::DrawLUAnswer(const MatrixXd& matrix) {
     const cinder::vec2 center = getWindowCenter();
     const cinder::ivec2 size = {500, 500};
     const Color color = Color::white();
@@ -134,42 +135,48 @@ void MatrixApp::DrawPermutationAnswer(MatrixXd matrix) {
     const cinder::ivec2 size = {500, 500};
     const Color color = Color::white();
     std::stringstream ss;
-    ss << Computations::ComputePermutationMatrix(matrix);
+    ss << Computations::ComputePermutationMatrix(std::move(matrix));
     PrintText("Your Permutation Matrix is",color,{500,500},{center.x-50,center.y - 50});
     PrintText(ss.str(), color, size , center);
 }
 
 void MatrixApp::InputMatrix() {
-    if (problem_type != 9) {
-        str_mat = reinterpret_cast<const char *>(ui::InputText("Input matrix", inputBuf, IM_ARRAYSIZE(inputBuf)));
+    if (problem_type != 9) { //TODO: Make sure you remove all magic numbers.
+        ui::InputText("Input matrix", &input_string);
+        str_mat = input_string;
+    } else {
+        ui::InputText("Input first matrix", &input_string);
+        ui::InputText("Input second matrix", &input_string2);
+        str_mat = input_string;
+        str_mat2 = input_string2;
     }
-    str_mat = reinterpret_cast<const char *>(ui::InputText("Input first matrix", inputBuf, IM_ARRAYSIZE(inputBuf)));
-    str_mat2 = reinterpret_cast<const char *>(ui::InputText("Input second matrix", inputBuf, IM_ARRAYSIZE(inputBuf)));
 }
 
 void MatrixApp::String_To_Matrix() {
-    if (problem_type != 9) {
+    if (problem_type != 9 && str_mat.size() == 9) {
+        //TODO: Make dynamic.
         //When the computation only needs one matrix.
         std::istringstream ss(str_mat);
         do {
-            string cell;
-            ss >> cell;
-            int element = std::stoi(cell);
-            in_mat1 << element;
+            int elem;
+            ss >> elem;
+            in_mat1 << elem;
         } while (ss);
-    } else {
+        state_ = AppState::kSolved;
+    } else if (str_mat.size() == 9 && str_mat2.size() == 9){
         std::istringstream ss1(str_mat);
         std::istringstream ss2(str_mat2);
         do {
-            string cell1;
-            string cell2;
-            ss1 >> cell1;
-            ss2 >> cell2;
-            int element1 = std::stoi(cell1);
-            int element2 = std::stoi(cell2);
-            in_mat1 << element1;
-            in_mat2 << element2;
+            int elem1;
+            int elem2;
+            ss1 >> elem1;
+            ss2 >> elem2;
+            in_mat1 << elem1;
+            in_mat2 << elem2;
         } while (ss1 && ss2);
+        state_ = AppState::kSolved;
+    } else {
+        //TODO: Make and change to error state;
     }
 }
 
