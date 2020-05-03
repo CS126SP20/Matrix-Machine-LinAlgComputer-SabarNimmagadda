@@ -157,11 +157,15 @@ void MatrixApp::String_To_Matrix() {
         //TODO: Make dynamic.
         //When the computation only needs one matrix.
         std::istringstream ss(str_mat);
-        do {
-            int elem;
-            ss >> elem;
-            in_mat1 << elem;
-        } while (ss);
+        for (int r = 0; r < 3; r++) {
+            for (int c = 0; c < 3; c++) {
+                do {
+                    int elem;
+                    ss >> elem;
+                    in_mat1(r, c) = elem;
+                } while (ss);
+            }
+        }
         state_ = AppState::kSolved;
     } else if (str_mat.size() == 9 && str_mat2.size() == 9){
         std::istringstream ss1(str_mat);
