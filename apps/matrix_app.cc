@@ -46,8 +46,6 @@ void MatrixApp::draw() {
     if (state_ == AppState::kSelecting) {
         PrintText("WELCOME",color, size, {500,500});
         ui::ScopedWindow window( "Choose problem", ImGuiWindowFlags_MenuBar );
-
-        // setup the window menu bar
         if( ui::BeginMenuBar() ){
             if( ui::BeginMenu( "Problem Type" )){
                 if (ui::MenuItem( "RREF" )) {
@@ -59,7 +57,6 @@ void MatrixApp::draw() {
                 ui::MenuItem( "Column Space");
                 ui::MenuItem("Null space");
                 if (ui::MenuItem("LU Decomposition")) {
-                    //state_ == AppState::kInputtingData;
                     problem_type = 5;
                     state_= AppState::kInputtingData;
                 }
@@ -79,14 +76,15 @@ void MatrixApp::draw() {
     }
     if (state_ == AppState::kInputtingData) {
         InputMatrix();
+        String_To_Matrix();
         state_ = AppState::kSolved;
     }
     if (state_ == AppState::kSolved) {
         if (problem_type == 5) {
-            DrawLUAnswer();
+            DrawLUAnswer(in_mat1);
         }
         if (problem_type == 6) {
-            DrawPermutationAnswer();
+            DrawPermutationAnswer(in_mat2);
         }
     }
 }
@@ -117,26 +115,26 @@ void MatrixApp::PrintText(const string& text, const Color color, const cinder::i
 void MatrixApp::DrawBackground() const {
     cinder::gl::clear(Color(0, 0, 0));
 }
-void MatrixApp::DrawLUAnswer() {
+void MatrixApp::DrawLUAnswer(MatrixXd matrix) {
     const cinder::vec2 center = getWindowCenter();
     const cinder::ivec2 size = {500, 500};
     const Color color = Color::white();
     std::stringstream ss;
-    ss << Computations::ComputeL(test_mat);
+    ss << Computations::ComputeL(matrix);
     PrintText("Your L Matrix is",color,{500,500},{center.x-50,center.y - 50});
     PrintText(ss.str(), color, size , center);
     std::stringstream st;
-    st << Computations::ComputeU(test_mat);
+    st << Computations::ComputeU(matrix);
     PrintText("Your U Matrix is",color,{500,500},{center.x-50,center.y + 150});
     PrintText(st.str(), color, size, {center.x, center.y + 200});
 }
 
-void MatrixApp::DrawPermutationAnswer() {
+void MatrixApp::DrawPermutationAnswer(MatrixXd matrix) {
     const cinder::vec2 center = getWindowCenter();
     const cinder::ivec2 size = {500, 500};
     const Color color = Color::white();
     std::stringstream ss;
-    ss << Computations::ComputePermutationMatrix(test_mat);
+    ss << Computations::ComputePermutationMatrix(matrix);
     PrintText("Your Permutation Matrix is",color,{500,500},{center.x-50,center.y - 50});
     PrintText(ss.str(), color, size , center);
 }
@@ -151,6 +149,7 @@ void MatrixApp::InputMatrix() {
 
 void MatrixApp::String_To_Matrix() {
     if (problem_type != 9) {
+        //When the computation only needs one matrix.
         std::istringstream ss(str_mat);
         do {
             string cell;
@@ -158,7 +157,19 @@ void MatrixApp::String_To_Matrix() {
             int element = std::stoi(cell);
             in_mat1 << element;
         } while (ss);
-
+    } else {
+        std::istringstream ss1(str_mat);
+        std::istringstream ss2(str_mat2);
+        do {
+            string cell1;
+            string cell2;
+            ss1 >> cell1;
+            ss2 >> cell2;
+            int element1 = std::stoi(cell1);
+            int element2 = std::stoi(cell2);
+            in_mat1 << element1;
+            in_mat2 << element2;
+        } while (ss1 && ss2);
     }
 }
 

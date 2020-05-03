@@ -25,12 +25,12 @@ class MatrixApp : public cinder::app::App {
 
 private:
   void DrawErrorMessage();
-  void DrawLUAnswer();
-  void DrawPermutationAnswer();
-  void DrawRREFAnswer();
-  void DrawMultiplicationAnswer();
-  void DrawInverseAnswer();
-  void DrawVectorSpaceAnswer();
+  void DrawLUAnswer(MatrixXd matrix);
+  void DrawPermutationAnswer(MatrixXd matrix);
+  void DrawRREFAnswer(MatrixXd matrix);
+  void DrawMultiplicationAnswer(MatrixXd matrix1, MatrixXd matrix2);
+  void DrawInverseAnswer(MatrixXd matrix);
+  void DrawVectorSpaceAnswer(MatrixXd matrix);
   void DrawAfterMessage();
   void InputMatrix();
   void String_To_Matrix();
