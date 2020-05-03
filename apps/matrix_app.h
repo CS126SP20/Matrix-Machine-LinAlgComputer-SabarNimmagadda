@@ -32,6 +32,8 @@ private:
   void DrawInverseAnswer();
   void DrawVectorSpaceAnswer();
   void DrawAfterMessage();
+  void InputMatrix();
+  void String_To_Matrix();
   void DrawBackground() const;
   void PrintText(const std::string& text, const cinder::Color color, const cinder::ivec2& size,
                  const cinder::vec2& loc);
@@ -49,6 +51,11 @@ private:
     typedef Eigen::Matrix<double, 3, 3 > M3X3;
     M3X3 test_mat;
     int problem_type;
+    char inputBuf[256];
+    M3X3 in_mat1;
+    M3X3 in_mat2;
+    std::string str_mat;
+    std::string str_mat2;
 };
 
 }  // namespace myapp

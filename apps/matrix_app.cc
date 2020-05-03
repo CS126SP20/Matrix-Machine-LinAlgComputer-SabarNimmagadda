@@ -35,7 +35,7 @@ void MatrixApp::setup() {
 }
 
 void MatrixApp::update() {
-
+    string input = reinterpret_cast<const char *>(ui::InputText("Input", inputBuf, IM_ARRAYSIZE(inputBuf)));
 }
 
 void MatrixApp::draw() {
@@ -61,9 +61,12 @@ void MatrixApp::draw() {
                 if (ui::MenuItem("LU Decomposition")) {
                     //state_ == AppState::kInputtingData;
                     problem_type = 5;
-                    state_= AppState::kSolved;
+                    state_= AppState::kInputtingData;
                 }
-                ui::MenuItem( "Permutation Matrix");
+                if (ui::MenuItem( "Permutation Matrix")) {
+                    problem_type = 6;
+                    state_= AppState::kInputtingData;
+                }
                 ui::MenuItem( "Inverse");
                 ui::MenuItem( "Matrix Multiplication");
                 ui::EndMenu();
@@ -74,9 +77,16 @@ void MatrixApp::draw() {
         const ImVec2 vec2(500, 500);
         ui::SetWindowSize("Choose problem", vec2);
     }
+    if (state_ == AppState::kInputtingData) {
+        InputMatrix();
+        state_ = AppState::kSolved;
+    }
     if (state_ == AppState::kSolved) {
         if (problem_type == 5) {
             DrawLUAnswer();
+        }
+        if (problem_type == 6) {
+            DrawPermutationAnswer();
         }
     }
 }
@@ -117,8 +127,40 @@ void MatrixApp::DrawLUAnswer() {
     PrintText(ss.str(), color, size , center);
     std::stringstream st;
     st << Computations::ComputeU(test_mat);
-    PrintText("Your U Matrix is",color,{500,500},{center.x-50,center.y + 100});
-    PrintText(st.str(), color, size, {center.x, center.y + 150});
+    PrintText("Your U Matrix is",color,{500,500},{center.x-50,center.y + 150});
+    PrintText(st.str(), color, size, {center.x, center.y + 200});
 }
+
+void MatrixApp::DrawPermutationAnswer() {
+    const cinder::vec2 center = getWindowCenter();
+    const cinder::ivec2 size = {500, 500};
+    const Color color = Color::white();
+    std::stringstream ss;
+    ss << Computations::ComputePermutationMatrix(test_mat);
+    PrintText("Your Permutation Matrix is",color,{500,500},{center.x-50,center.y - 50});
+    PrintText(ss.str(), color, size , center);
+}
+
+void MatrixApp::InputMatrix() {
+    if (problem_type != 9) {
+        str_mat = reinterpret_cast<const char *>(ui::InputText("Input matrix", inputBuf, IM_ARRAYSIZE(inputBuf)));
+    }
+    str_mat = reinterpret_cast<const char *>(ui::InputText("Input first matrix", inputBuf, IM_ARRAYSIZE(inputBuf)));
+    str_mat2 = reinterpret_cast<const char *>(ui::InputText("Input second matrix", inputBuf, IM_ARRAYSIZE(inputBuf)));
+}
+
+void MatrixApp::String_To_Matrix() {
+    if (problem_type != 9) {
+        std::istringstream ss(str_mat);
+        do {
+            string cell;
+            ss >> cell;
+            int element = std::stoi(cell);
+            in_mat1 << element;
+        } while (ss);
+
+    }
+}
+
 
 }  // namespace myapp
