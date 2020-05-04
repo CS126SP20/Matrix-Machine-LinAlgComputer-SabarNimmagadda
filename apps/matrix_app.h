@@ -31,6 +31,7 @@ private:
   void DrawInverseAnswer(MatrixXd matrix);
   void DrawVectorSpaceAnswer(MatrixXd matrix);
   void InputMatrix();
+  void ReInputMatrix();
   void ResetData();
   void String_To_Matrix();
   void DrawBackground() const;
@@ -51,8 +52,6 @@ private:
     typedef Eigen::Matrix<double, 3, 3 > M3X3;
     M3X3 test_mat;
     int problem_type;
-    char inputBuf1[9];
-    char inputBuf2[9];
     M3X3 in_mat1;
     M3X3 in_mat2;
     int kDimension;

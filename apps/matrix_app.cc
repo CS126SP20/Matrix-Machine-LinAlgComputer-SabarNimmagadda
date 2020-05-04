@@ -36,7 +36,10 @@ void MatrixApp::setup() {
 }
 
 void MatrixApp::update() {
-
+    if (state_ == AppState::kInputtingData) {
+        InputMatrix();
+        String_To_Matrix();
+    }
 }
 
 void MatrixApp::draw() {
@@ -87,10 +90,6 @@ void MatrixApp::draw() {
         }
         const ImVec2 vec2(500, 500);
         ui::SetWindowSize("Choose problem", vec2);
-    }
-    if (state_ == AppState::kInputtingData) {
-        InputMatrix();
-        String_To_Matrix();
     }
     if (state_ == AppState::kSolved) {
         if (problem_type == 5) {
@@ -147,7 +146,6 @@ void MatrixApp::DrawLUAnswer(const MatrixXd& matrix) {
     PrintText("Your U Matrix is",color,{500,500},{center.x-50,center.y + 150});
     PrintText(st.str(), color, size, {center.x, center.y + 200});
     BackToMenu();
-    ResetData();
 }
 
 void MatrixApp::DrawPermutationAnswer(MatrixXd matrix) {
@@ -159,7 +157,6 @@ void MatrixApp::DrawPermutationAnswer(MatrixXd matrix) {
     PrintText("Your Permutation Matrix is",color,{500,500},{center.x-50,center.y - 50});
     PrintText(ss.str(), color, size , center);
     BackToMenu();
-    ResetData();
 }
 
 void MatrixApp::DrawRREFAnswer(MatrixXd matrix) {
@@ -171,7 +168,6 @@ void MatrixApp::DrawRREFAnswer(MatrixXd matrix) {
     PrintText("Your Row Reduced Matrix is",color,{500,500},{center.x-50,center.y - 50});
     PrintText(ss.str(), color, size , center);
     BackToMenu();
-    ResetData();
 }
 
 void MatrixApp::DrawMultiplicationAnswer(MatrixXd matrix1, MatrixXd matrix2) {
@@ -183,7 +179,6 @@ void MatrixApp::DrawMultiplicationAnswer(MatrixXd matrix1, MatrixXd matrix2) {
     PrintText("The product Matrix is",color,{500,500},{center.x-50,center.y - 50});
     PrintText(ss.str(), color, size , center);
     BackToMenu();
-    ResetData();
 }
 
 void MatrixApp::DrawInverseAnswer(MatrixXd matrix) {
@@ -195,7 +190,6 @@ void MatrixApp::DrawInverseAnswer(MatrixXd matrix) {
     PrintText("The Inverse Matrix is",color,{500,500},{center.x-50,center.y - 50});
     PrintText(ss.str(), color, size , center);
     BackToMenu();
-    ResetData();
 }
 
 void MatrixApp::InputMatrix() {
@@ -211,6 +205,7 @@ void MatrixApp::InputMatrix() {
         str_mat2 = input_string2;
     }
 }
+
 
 void MatrixApp::String_To_Matrix() {
     int mat_size = kDimension *kDimension;
@@ -252,16 +247,8 @@ void MatrixApp::BackToMenu() {
     const cinder::ivec2 button_size = {500, 50};
     if (ui::Button("BACK TO MAIN MENU", button_size)) {
         state_ = AppState::kSelecting;
-    }
-}
-
-void MatrixApp::ResetData() {
-    const cinder::ivec2 button_size = {500, 50};
-    if (ui::Button("RESET MATRICES", button_size)) {
-        str_mat = "";
-        str_mat2 = "";
-        in_mat1.setZero();
-        in_mat2.setZero();
+        input_string = "";
+        input_string2 = "";
     }
 }
 
