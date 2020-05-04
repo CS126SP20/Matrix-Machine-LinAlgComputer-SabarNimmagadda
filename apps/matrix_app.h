@@ -12,8 +12,7 @@ enum class AppState {
     kSelecting,
     kInputtingData,
     kSolved,
-    kExplaining,
-    kDone,
+    kDisplayed,
 };
 class MatrixApp : public cinder::app::App {
  public:
@@ -37,6 +36,7 @@ private:
   void DrawBackground() const;
   void PrintText(const std::string& text, const cinder::Color color, const cinder::ivec2& size,
                  const cinder::vec2& loc);
+  void BackToMenu();
   AppState state_;
   std::vector<string> list_of_problems = {
           "RREF",

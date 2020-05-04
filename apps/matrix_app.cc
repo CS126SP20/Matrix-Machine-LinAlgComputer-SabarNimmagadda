@@ -78,7 +78,6 @@ void MatrixApp::draw() {
     if (state_ == AppState::kInputtingData) {
         InputMatrix();
         String_To_Matrix();
-        //state_ = AppState::kSolved;
     }
     if (state_ == AppState::kSolved) {
         if (problem_type == 5) {
@@ -88,12 +87,10 @@ void MatrixApp::draw() {
             DrawPermutationAnswer(in_mat1);
         }
     }
+
 }
 
 void MatrixApp::keyDown(KeyEvent event) {
-    if(event.getChar() == 'a') {
-        state_ = AppState::kSolved;
-    }
 }
 
 void MatrixApp::PrintText(const string& text, const Color color, const cinder::ivec2& size,
@@ -128,6 +125,7 @@ void MatrixApp::DrawLUAnswer(const MatrixXd& matrix) {
     st << Computations::ComputeU(matrix);
     PrintText("Your U Matrix is",color,{500,500},{center.x-50,center.y + 150});
     PrintText(st.str(), color, size, {center.x, center.y + 200});
+    BackToMenu();
 }
 
 void MatrixApp::DrawPermutationAnswer(MatrixXd matrix) {
@@ -138,6 +136,7 @@ void MatrixApp::DrawPermutationAnswer(MatrixXd matrix) {
     ss << Computations::ComputePermutationMatrix(std::move(matrix));
     PrintText("Your Permutation Matrix is",color,{500,500},{center.x-50,center.y - 50});
     PrintText(ss.str(), color, size , center);
+    BackToMenu();
 }
 
 void MatrixApp::InputMatrix() {
@@ -159,8 +158,8 @@ void MatrixApp::String_To_Matrix() {
         //TODO: Make dynamic.
         //When the computation only needs one matrix.
         std::istringstream ss(str_mat);
-        for (int r = 0; r < 3; r++) {
-            for (int c = 0; c < 3; c++) {
+        for (int r = 0; r < kDimension; r++) {
+            for (int c = 0; c < kDimension; c++) {
                 int elem;
                 ss >> elem;
                 in_mat1(r, c) = elem;
@@ -182,6 +181,16 @@ void MatrixApp::String_To_Matrix() {
         state_ = AppState::kSolved;
     } else {
         //TODO: Make and change to error state;
+    }
+}
+
+void MatrixApp::BackToMenu() {
+    const cinder::ivec2 button_size = {500, 50};
+    //const cinder::vec2 center = getWindowCenter();
+    //const cinder::ivec2 button_location = {center.x, center.y + 250};
+    //ui::SetCursorPos(button_location);
+    if (ui::Button("BACK TO MAIN MENU", button_size)) {
+        state_ = AppState::kSelecting;
     }
 }
 
