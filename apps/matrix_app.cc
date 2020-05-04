@@ -48,7 +48,7 @@ void MatrixApp::draw() {
         PrintText("WELCOME",color, size, {500,500});
         ui::ScopedWindow window( "Choose problem", ImGuiWindowFlags_MenuBar );
         if( ui::BeginMenuBar() ){
-            if( ui::BeginMenu( "Problem Type" )){
+            if( ui::BeginMenu( "Problem Type" )) {
                 if (ui::MenuItem( "RREF" )) {
                     problem_type = 1;
                     state_= AppState::kInputtingData;
@@ -147,6 +147,7 @@ void MatrixApp::DrawLUAnswer(const MatrixXd& matrix) {
     PrintText("Your U Matrix is",color,{500,500},{center.x-50,center.y + 150});
     PrintText(st.str(), color, size, {center.x, center.y + 200});
     BackToMenu();
+    ResetData();
 }
 
 void MatrixApp::DrawPermutationAnswer(MatrixXd matrix) {
@@ -158,6 +159,7 @@ void MatrixApp::DrawPermutationAnswer(MatrixXd matrix) {
     PrintText("Your Permutation Matrix is",color,{500,500},{center.x-50,center.y - 50});
     PrintText(ss.str(), color, size , center);
     BackToMenu();
+    ResetData();
 }
 
 void MatrixApp::DrawRREFAnswer(MatrixXd matrix) {
@@ -169,6 +171,7 @@ void MatrixApp::DrawRREFAnswer(MatrixXd matrix) {
     PrintText("Your Row Reduced Matrix is",color,{500,500},{center.x-50,center.y - 50});
     PrintText(ss.str(), color, size , center);
     BackToMenu();
+    ResetData();
 }
 
 void MatrixApp::DrawMultiplicationAnswer(MatrixXd matrix1, MatrixXd matrix2) {
@@ -180,6 +183,7 @@ void MatrixApp::DrawMultiplicationAnswer(MatrixXd matrix1, MatrixXd matrix2) {
     PrintText("The product Matrix is",color,{500,500},{center.x-50,center.y - 50});
     PrintText(ss.str(), color, size , center);
     BackToMenu();
+    ResetData();
 }
 
 void MatrixApp::DrawInverseAnswer(MatrixXd matrix) {
@@ -191,6 +195,7 @@ void MatrixApp::DrawInverseAnswer(MatrixXd matrix) {
     PrintText("The Inverse Matrix is",color,{500,500},{center.x-50,center.y - 50});
     PrintText(ss.str(), color, size , center);
     BackToMenu();
+    ResetData();
 }
 
 void MatrixApp::InputMatrix() {
@@ -199,6 +204,7 @@ void MatrixApp::InputMatrix() {
         ui::InputText("Input matrix", &input_string);
         str_mat = input_string;
     } else {
+        ui::InputInt("Enter dimension",  &kDimension);
         ui::InputText("Input first matrix", &input_string);
         ui::InputText("Input second matrix", &input_string2);
         str_mat = input_string;
@@ -221,7 +227,7 @@ void MatrixApp::String_To_Matrix() {
         }
         std::cout << in_mat1;
         state_ = AppState::kSolved;
-    } else if (str_mat.size() == 18 && str_mat2.size() == 18){
+    } else if (str_mat.size() == mat_size * 2 && str_mat2.size() == mat_size * 2 && mat_size != 0){
         std::istringstream ss1(str_mat);
         std::istringstream ss2(str_mat2);
         for (int r = 0; r < kDimension; r++) {
@@ -246,6 +252,16 @@ void MatrixApp::BackToMenu() {
     const cinder::ivec2 button_size = {500, 50};
     if (ui::Button("BACK TO MAIN MENU", button_size)) {
         state_ = AppState::kSelecting;
+    }
+}
+
+void MatrixApp::ResetData() {
+    const cinder::ivec2 button_size = {500, 50};
+    if (ui::Button("RESET MATRICES", button_size)) {
+        str_mat = "";
+        str_mat2 = "";
+        in_mat1.setZero();
+        in_mat2.setZero();
     }
 }
 
