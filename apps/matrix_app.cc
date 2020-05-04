@@ -50,13 +50,22 @@ void MatrixApp::draw() {
         if( ui::BeginMenuBar() ){
             if( ui::BeginMenu( "Problem Type" )){
                 if (ui::MenuItem( "RREF" )) {
-                    //state_ == AppState::kInputtingData;
-                    //INput matrix;
-                    Computations::ComputeRREF(test_mat);
+                    problem_type = 1;
+                    state_= AppState::kInputtingData;
+
                 }
-                ui::MenuItem( "Row Space" );
-                ui::MenuItem( "Column Space");
-                ui::MenuItem("Null space");
+                if (ui::MenuItem( "Row Space" )) {
+                    problem_type = 2;
+                    state_= AppState::kInputtingData;
+                }
+                if (ui::MenuItem( "Column Space")) {
+                    problem_type = 3;
+                    state_= AppState::kInputtingData;
+                }
+                if (ui::MenuItem("Null space")) {
+                    problem_type = 4;
+                    state_= AppState::kInputtingData;
+                }
                 if (ui::MenuItem("LU Decomposition")) {
                     problem_type = 5;
                     state_= AppState::kInputtingData;
@@ -65,13 +74,15 @@ void MatrixApp::draw() {
                     problem_type = 6;
                     state_= AppState::kInputtingData;
                 }
-                ui::MenuItem( "Inverse");
+                if (ui::MenuItem( "Inverse")) {
+                    problem_type = 7;
+                    state_= AppState::kInputtingData;
+                }
                 ui::MenuItem( "Matrix Multiplication");
                 ui::EndMenu();
             }
             ui::EndMenuBar();
         }
-
         const ImVec2 vec2(500, 500);
         ui::SetWindowSize("Choose problem", vec2);
     }
@@ -85,6 +96,9 @@ void MatrixApp::draw() {
         }
         if (problem_type == 6) {
             DrawPermutationAnswer(in_mat1);
+        }
+        if (problem_type == 1) {
+
         }
     }
 
@@ -139,6 +153,21 @@ void MatrixApp::DrawPermutationAnswer(MatrixXd matrix) {
     BackToMenu();
 }
 
+void MatrixApp::DrawRREFAnswer(MatrixXd matrix) {
+    const cinder::vec2 center = getWindowCenter();
+    const cinder::ivec2 size = {500, 500};
+    const Color color = Color::white();
+    std::stringstream ss;
+    ss << Computations::ComputeRREF(std::move(matrix));
+    PrintText("Your Row Reduced Matrix is",color,{500,500},{center.x-50,center.y - 50});
+    PrintText(ss.str(), color, size , center);
+    BackToMenu();
+}
+
+void MatrixApp::DrawMultiplicationAnswer(MatrixXd matrix1, MatrixXd matrix2) {
+
+}
+
 void MatrixApp::InputMatrix() {
     if (problem_type != 9) { //TODO: Make sure you remove all magic numbers.
         ui::InputInt("Enter dimension",  &kDimension);
@@ -186,9 +215,6 @@ void MatrixApp::String_To_Matrix() {
 
 void MatrixApp::BackToMenu() {
     const cinder::ivec2 button_size = {500, 50};
-    //const cinder::vec2 center = getWindowCenter();
-    //const cinder::ivec2 button_location = {center.x, center.y + 250};
-    //ui::SetCursorPos(button_location);
     if (ui::Button("BACK TO MAIN MENU", button_size)) {
         state_ = AppState::kSelecting;
     }
