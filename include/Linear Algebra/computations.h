@@ -25,6 +25,11 @@ public:
     static MatrixXd ComputeMultiply(MatrixXd matrix1, MatrixXd matrix2);
     static MatrixXd ComputeRowSpace(MatrixXd matrix);
     static MatrixXd ComputeColSpace(MatrixXd matrix);
+    static MatrixXd ComputeQ(MatrixXd matrix);
+    static MatrixXd ComputeR(MatrixXd matrix);
+    static MatrixXd ComputeDotProduct(MatrixXd matrix1, MatrixXd matrix2);
+    static MatrixXd ComputeEigenValues(MatrixXd matrix);
+    static MatrixXd ComputeEigenVectors(MatrixXd matrix);
  private:
     MatrixXd in_matrix;
 

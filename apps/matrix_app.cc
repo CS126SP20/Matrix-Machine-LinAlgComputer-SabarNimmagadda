@@ -192,6 +192,10 @@ void MatrixApp::DrawInverseAnswer(MatrixXd matrix) {
     BackToMenu();
 }
 
+void MatrixApp::DrawQRAnswer(MatrixXd) {
+
+}
+
 void MatrixApp::InputMatrix() {
     if (problem_type != 8) { //TODO: Make sure you remove all magic numbers.
         ui::InputInt("Enter dimension",  &kDimension);

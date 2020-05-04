@@ -29,7 +29,7 @@ private:
   void DrawRREFAnswer(MatrixXd matrix);
   void DrawMultiplicationAnswer(MatrixXd matrix1, MatrixXd matrix2);
   void DrawInverseAnswer(MatrixXd matrix);
-  void DrawVectorSpaceAnswer(MatrixXd matrix);
+  void DrawQRAnswer(MatrixXd matrix);
   void InputMatrix();
   void ReInputMatrix();
   void ResetData();
@@ -47,7 +47,8 @@ private:
           "LU Decomposition",
           "Permutation Matrix",
           "Inverse",
-          "Matrix Multiplication"
+          "Matrix Multiplication",
+          "QR Decomposition"
   };
     typedef Eigen::Matrix<double, 3, 3 > M3X3;
     M3X3 test_mat;

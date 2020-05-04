@@ -5,9 +5,12 @@
 #include <Eigen/Dense>
 #include <Eigen/LU>
 #include <iostream>
+#include <Eigen/QR>
+#include <Eigen/Householder>
 
 using Eigen::MatrixXd;
 using std::string;
+typedef Eigen::Matrix<double, 3, 3 > M3X3;
   MatrixXd Computations::ComputeL(MatrixXd m) {
      typedef Eigen::Matrix<double, 3, 3 > L_Matrix;
      Eigen::FullPivLU<L_Matrix> lu(m);
@@ -63,6 +66,20 @@ using std::string;
       if (m.cols() == n.rows()) {
           return m*n;
       }
+  }
+
+  MatrixXd Computations::ComputeR(MatrixXd matrix) {
+      Eigen::HouseholderQR<M3X3> qr(matrix.rows(), matrix.cols());
+      qr.compute(matrix);
+      MatrixXd R = qr.matrixQR().triangularView<Eigen::Upper>();
+      return R;
+  }
+
+  MatrixXd Computations::ComputeQ(MatrixXd matrix) {
+      Eigen::HouseholderQR<M3X3> qr(matrix.rows(), matrix.cols());
+      qr.compute(matrix);
+      MatrixXd Q = qr.householderQ();
+      return Q;
   }
 
 
