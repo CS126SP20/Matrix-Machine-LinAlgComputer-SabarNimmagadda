@@ -52,7 +52,6 @@ void MatrixApp::draw() {
                 if (ui::MenuItem( "RREF" )) {
                     problem_type = 1;
                     state_= AppState::kInputtingData;
-
                 }
                 if (ui::MenuItem( "Row Space" )) {
                     problem_type = 2;
@@ -78,7 +77,10 @@ void MatrixApp::draw() {
                     problem_type = 7;
                     state_= AppState::kInputtingData;
                 }
-                ui::MenuItem( "Matrix Multiplication");
+                if (ui::MenuItem( "Matrix Multiplication")) {
+                    problem_type = 8;
+                    state_ = AppState::kInputtingData;
+                }
                 ui::EndMenu();
             }
             ui::EndMenuBar();
@@ -98,10 +100,15 @@ void MatrixApp::draw() {
             DrawPermutationAnswer(in_mat1);
         }
         if (problem_type == 1) {
-
+            DrawRREFAnswer(in_mat1);
+        }
+        if (problem_type == 8) {
+            DrawMultiplicationAnswer(in_mat1, in_mat2);
+        }
+        if (problem_type == 7) {
+            DrawInverseAnswer(in_mat1);
         }
     }
-
 }
 
 void MatrixApp::keyDown(KeyEvent event) {
@@ -165,11 +172,29 @@ void MatrixApp::DrawRREFAnswer(MatrixXd matrix) {
 }
 
 void MatrixApp::DrawMultiplicationAnswer(MatrixXd matrix1, MatrixXd matrix2) {
+    const cinder::vec2 center = getWindowCenter();
+    const cinder::ivec2 size = {500, 500};
+    const Color color = Color::white();
+    std::stringstream ss;
+    ss << Computations::ComputeMultiply(std::move(matrix1), std::move(matrix2));
+    PrintText("The product Matrix is",color,{500,500},{center.x-50,center.y - 50});
+    PrintText(ss.str(), color, size , center);
+    BackToMenu();
+}
 
+void MatrixApp::DrawInverseAnswer(MatrixXd matrix) {
+    const cinder::vec2 center = getWindowCenter();
+    const cinder::ivec2 size = {500, 500};
+    const Color color = Color::white();
+    std::stringstream ss;
+    ss << Computations::ComputeInverse(std::move(matrix));
+    PrintText("The Inverse Matrix is",color,{500,500},{center.x-50,center.y - 50});
+    PrintText(ss.str(), color, size , center);
+    BackToMenu();
 }
 
 void MatrixApp::InputMatrix() {
-    if (problem_type != 9) { //TODO: Make sure you remove all magic numbers.
+    if (problem_type != 8) { //TODO: Make sure you remove all magic numbers.
         ui::InputInt("Enter dimension",  &kDimension);
         ui::InputText("Input matrix", &input_string);
         str_mat = input_string;
@@ -183,7 +208,7 @@ void MatrixApp::InputMatrix() {
 
 void MatrixApp::String_To_Matrix() {
     int mat_size = kDimension *kDimension;
-    if (problem_type != 9 && str_mat.size() == mat_size * 2 && mat_size != 0) { // <= size * 2
+    if (problem_type != 8 && str_mat.size() == mat_size * 2 && mat_size != 0) { // <= size * 2
         //TODO: Make dynamic.
         //When the computation only needs one matrix.
         std::istringstream ss(str_mat);
@@ -199,14 +224,18 @@ void MatrixApp::String_To_Matrix() {
     } else if (str_mat.size() == 18 && str_mat2.size() == 18){
         std::istringstream ss1(str_mat);
         std::istringstream ss2(str_mat2);
-        do {
-            int elem1;
-            int elem2;
-            ss1 >> elem1;
-            ss2 >> elem2;
-            in_mat1 << elem1;
-            in_mat2 << elem2;
-        } while (ss1 && ss2);
+        for (int r = 0; r < kDimension; r++) {
+            for (int c = 0; c < kDimension; c++) {
+                int elem1;
+                int elem2;
+                ss1 >> elem1;
+                ss2 >> elem2;
+                in_mat1(r, c) = elem1;
+                in_mat2(r, c) = elem2;
+            }
+        }
+        std::cout << in_mat1 << std::endl;
+        std::cout << in_mat2;
         state_ = AppState::kSolved;
     } else {
         //TODO: Make and change to error state;
