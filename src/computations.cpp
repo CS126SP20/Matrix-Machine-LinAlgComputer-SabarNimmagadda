@@ -8,9 +8,13 @@
 #include <Eigen/QR>
 #include <Eigen/Householder>
 
+
 using Eigen::MatrixXd;
 using std::string;
-typedef Eigen::Matrix<double, 3, 3 > M3X3;
+
+  void Computations::setDimension(int dim) {
+      kDimension = dim;
+  }
   MatrixXd Computations::ComputeL(MatrixXd m) {
      typedef Eigen::Matrix<double, 3, 3 > L_Matrix;
      Eigen::FullPivLU<L_Matrix> lu(m);
@@ -32,11 +36,11 @@ typedef Eigen::Matrix<double, 3, 3 > M3X3;
       P_Matrix p = lu.matrixLU();
       return p;
   }
-  MatrixXd Computations::ComputeInverse(MatrixXd m) {
+  MatrixXd Computations::ComputeInverse(const MatrixXd& m) {
       return m.inverse();
   }
 
-  MatrixXd Computations::ComputeRREF(MatrixXd m) {
+  MatrixXd Computations::ComputeRREF(const MatrixXd& m) {
       int lead = 0;
       MatrixXd out = m;
       while (lead < m.rows()) {
@@ -68,18 +72,22 @@ typedef Eigen::Matrix<double, 3, 3 > M3X3;
       }
   }
 
-  MatrixXd Computations::ComputeR(MatrixXd matrix) {
+  MatrixXd Computations::ComputeR(const MatrixXd& matrix) {
       Eigen::HouseholderQR<M3X3> qr(matrix.rows(), matrix.cols());
       qr.compute(matrix);
       MatrixXd R = qr.matrixQR().triangularView<Eigen::Upper>();
       return R;
   }
 
-  MatrixXd Computations::ComputeQ(MatrixXd matrix) {
+  MatrixXd Computations::ComputeQ(const MatrixXd& matrix) {
       Eigen::HouseholderQR<M3X3> qr(matrix.rows(), matrix.cols());
       qr.compute(matrix);
       MatrixXd Q = qr.householderQ();
       return Q;
+  }
+
+  MatrixXd Computations::ComputeDotProduct(MatrixXd matrix1, MatrixXd matrix2) {
+      for (int i < MatrixApp::)
   }
 
 

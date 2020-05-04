@@ -13,25 +13,24 @@
 using Eigen::MatrixXd;
 using std::string;
 class Computations {
-    //typedef Eigen::Matrix<double, 3, 3> Matrix3d;
 
 public:
-    void Input_Matrix(string input);
     static MatrixXd ComputeL(MatrixXd matrix);
     static MatrixXd ComputeU(MatrixXd matrix);
     static MatrixXd ComputePermutationMatrix(MatrixXd matrix);
-    static MatrixXd ComputeInverse(MatrixXd m);
-    static MatrixXd ComputeRREF(MatrixXd m);
+    static MatrixXd ComputeInverse(const MatrixXd& m);
+    static MatrixXd ComputeRREF(const MatrixXd& m);
     static MatrixXd ComputeMultiply(MatrixXd matrix1, MatrixXd matrix2);
     static MatrixXd ComputeRowSpace(MatrixXd matrix);
     static MatrixXd ComputeColSpace(MatrixXd matrix);
-    static MatrixXd ComputeQ(MatrixXd matrix);
-    static MatrixXd ComputeR(MatrixXd matrix);
+    static MatrixXd ComputeQ(const MatrixXd& matrix);
+    static MatrixXd ComputeR(const MatrixXd& matrix);
     static MatrixXd ComputeDotProduct(MatrixXd matrix1, MatrixXd matrix2);
     static MatrixXd ComputeEigenValues(MatrixXd matrix);
     static MatrixXd ComputeEigenVectors(MatrixXd matrix);
+    void setDimension(int dim);
  private:
-    MatrixXd in_matrix;
-
+    typedef Eigen::Matrix<double, 3, 3 > M3X3;
+    int kDimension;
 };
 #endif //FINALPROJECT_COMPUTATIONS_H

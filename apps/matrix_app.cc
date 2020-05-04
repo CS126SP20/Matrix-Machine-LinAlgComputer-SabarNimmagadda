@@ -84,6 +84,10 @@ void MatrixApp::draw() {
                     problem_type = 8;
                     state_ = AppState::kInputtingData;
                 }
+                if (ui::MenuItem("QR Decomposition")) {
+                    problem_type = 9;
+                    state_ = AppState::kInputtingData;
+                }
                 ui::EndMenu();
             }
             ui::EndMenuBar();
@@ -92,6 +96,9 @@ void MatrixApp::draw() {
         ui::SetWindowSize("Choose problem", vec2);
     }
     if (state_ == AppState::kSolved) {
+        if (problem_type == 9) {
+            DrawQRAnswer(in_mat1);
+        }
         if (problem_type == 5) {
             DrawLUAnswer(in_mat1);
         }
@@ -159,12 +166,12 @@ void MatrixApp::DrawPermutationAnswer(MatrixXd matrix) {
     BackToMenu();
 }
 
-void MatrixApp::DrawRREFAnswer(MatrixXd matrix) {
+void MatrixApp::DrawRREFAnswer(const MatrixXd& matrix) {
     const cinder::vec2 center = getWindowCenter();
     const cinder::ivec2 size = {500, 500};
     const Color color = Color::white();
     std::stringstream ss;
-    ss << Computations::ComputeRREF(std::move(matrix));
+    ss << Computations::ComputeRREF(matrix);
     PrintText("Your Row Reduced Matrix is",color,{500,500},{center.x-50,center.y - 50});
     PrintText(ss.str(), color, size , center);
     BackToMenu();
@@ -181,19 +188,30 @@ void MatrixApp::DrawMultiplicationAnswer(MatrixXd matrix1, MatrixXd matrix2) {
     BackToMenu();
 }
 
-void MatrixApp::DrawInverseAnswer(MatrixXd matrix) {
+void MatrixApp::DrawInverseAnswer(const MatrixXd& matrix) {
     const cinder::vec2 center = getWindowCenter();
     const cinder::ivec2 size = {500, 500};
     const Color color = Color::white();
     std::stringstream ss;
-    ss << Computations::ComputeInverse(std::move(matrix));
+    ss << Computations::ComputeInverse(matrix);
     PrintText("The Inverse Matrix is",color,{500,500},{center.x-50,center.y - 50});
     PrintText(ss.str(), color, size , center);
     BackToMenu();
 }
 
-void MatrixApp::DrawQRAnswer(MatrixXd) {
-
+void MatrixApp::DrawQRAnswer(const MatrixXd& matrix) {
+    const cinder::vec2 center = getWindowCenter();
+    const cinder::ivec2 size = {500, 500};
+    const Color color = Color::white();
+    std::stringstream ss;
+    ss << Computations::ComputeQ(matrix);
+    PrintText("Your Q Matrix is",color,{500,500},{center.x-50,center.y - 50});
+    PrintText(ss.str(), color, size , center);
+    std::stringstream st;
+    st << Computations::ComputeU(matrix);
+    PrintText("Your R Matrix is",color,{500,500},{center.x-50,center.y + 150});
+    PrintText(st.str(), color, size, {center.x, center.y + 200});
+    BackToMenu();
 }
 
 void MatrixApp::InputMatrix() {
@@ -253,6 +271,7 @@ void MatrixApp::BackToMenu() {
         state_ = AppState::kSelecting;
         input_string = "";
         input_string2 = "";
+        kDimension = 0;
     }
 }
 

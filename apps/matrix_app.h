@@ -21,15 +21,16 @@ class MatrixApp : public cinder::app::App {
   void update() override;
   void draw() override;
   void keyDown(cinder::app::KeyEvent) override;
+  int kDimension;
 
 private:
   void DrawErrorMessage();
   void DrawLUAnswer(const MatrixXd& matrix);
   void DrawPermutationAnswer(MatrixXd matrix);
-  void DrawRREFAnswer(MatrixXd matrix);
+  void DrawRREFAnswer(const MatrixXd& matrix);
   void DrawMultiplicationAnswer(MatrixXd matrix1, MatrixXd matrix2);
-  void DrawInverseAnswer(MatrixXd matrix);
-  void DrawQRAnswer(MatrixXd matrix);
+  void DrawInverseAnswer(const MatrixXd& matrix);
+  void DrawQRAnswer(const MatrixXd& matrix);
   void InputMatrix();
   void ReInputMatrix();
   void ResetData();
@@ -55,7 +56,6 @@ private:
     int problem_type;
     M3X3 in_mat1;
     M3X3 in_mat2;
-    int kDimension;
     std::string input_string = "";
     std::string input_string2 = "";
     std::string str_mat;
