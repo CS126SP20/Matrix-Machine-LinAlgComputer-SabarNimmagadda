@@ -55,6 +55,7 @@ private:
     char inputBuf2[9];
     M3X3 in_mat1;
     M3X3 in_mat2;
+    int kDimension;
     std::string input_string = "";
     std::string input_string2 = "";
     std::string str_mat;

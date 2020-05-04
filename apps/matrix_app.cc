@@ -142,6 +142,7 @@ void MatrixApp::DrawPermutationAnswer(MatrixXd matrix) {
 
 void MatrixApp::InputMatrix() {
     if (problem_type != 9) { //TODO: Make sure you remove all magic numbers.
+        ui::InputInt("Enter dimension",  &kDimension);
         ui::InputText("Input matrix", &input_string);
         str_mat = input_string;
     } else {
@@ -153,21 +154,21 @@ void MatrixApp::InputMatrix() {
 }
 
 void MatrixApp::String_To_Matrix() {
-    if (problem_type != 9 && str_mat.size() == 9) {
+    int mat_size = kDimension *kDimension;
+    if (problem_type != 9 && str_mat.size() == mat_size * 2 && mat_size != 0) { // <= size * 2
         //TODO: Make dynamic.
         //When the computation only needs one matrix.
         std::istringstream ss(str_mat);
         for (int r = 0; r < 3; r++) {
             for (int c = 0; c < 3; c++) {
-                do {
-                    int elem;
-                    ss >> elem;
-                    in_mat1(r, c) = elem;
-                } while (ss);
+                int elem;
+                ss >> elem;
+                in_mat1(r, c) = elem;
             }
         }
+        std::cout << in_mat1;
         state_ = AppState::kSolved;
-    } else if (str_mat.size() == 9 && str_mat2.size() == 9){
+    } else if (str_mat.size() == 18 && str_mat2.size() == 18){
         std::istringstream ss1(str_mat);
         std::istringstream ss2(str_mat2);
         do {
