@@ -81,11 +81,15 @@ void MatrixApp::draw() {
                     state_= AppState::kInputtingData;
                 }
                 if (ui::MenuItem( "Matrix Multiplication")) {
-                    problem_type = 8;
+                    problem_type = 9;
                     state_ = AppState::kInputtingData;
                 }
                 if (ui::MenuItem("QR Decomposition")) {
-                    problem_type = 9;
+                    problem_type = 8;
+                    state_ = AppState::kInputtingData;
+                }
+                if (ui::MenuItem("Dot Product")) {
+                    problem_type = 10;
                     state_ = AppState::kInputtingData;
                 }
                 ui::EndMenu();
@@ -96,7 +100,7 @@ void MatrixApp::draw() {
         ui::SetWindowSize("Choose problem", vec2);
     }
     if (state_ == AppState::kSolved) {
-        if (problem_type == 9) {
+        if (problem_type == 8) {
             DrawQRAnswer(in_mat1);
         }
         if (problem_type == 5) {
@@ -108,11 +112,14 @@ void MatrixApp::draw() {
         if (problem_type == 1) {
             DrawRREFAnswer(in_mat1);
         }
-        if (problem_type == 8) {
+        if (problem_type == 9) {
             DrawMultiplicationAnswer(in_mat1, in_mat2);
         }
         if (problem_type == 7) {
             DrawInverseAnswer(in_mat1);
+        }
+        if (problem_type == 10) {
+            DrawDotProductAnswer(in_mat1, in_mat2);
         }
     }
 }
@@ -152,6 +159,17 @@ void MatrixApp::DrawLUAnswer(const MatrixXd& matrix) {
     st << Computations::ComputeU(matrix);
     PrintText("Your U Matrix is",color,{500,500},{center.x-50,center.y + 150});
     PrintText(st.str(), color, size, {center.x, center.y + 200});
+    BackToMenu();
+}
+
+void MatrixApp::DrawDotProductAnswer(MatrixXd matrix1, MatrixXd matrix2) {
+    const cinder::vec2 center = getWindowCenter();
+    const cinder::ivec2 size = {500, 500};
+    const Color color = Color::white();
+    std::stringstream ss;
+    ss << Computations::ComputeDotProduct(std::move(matrix1), std::move(matrix2), kDimension);
+    PrintText("Your Dot Product is", color, {500,500},{center.x-50,center.y - 50});
+    PrintText(ss.str(), color, size, center);
     BackToMenu();
 }
 
@@ -215,23 +233,22 @@ void MatrixApp::DrawQRAnswer(const MatrixXd& matrix) {
 }
 
 void MatrixApp::InputMatrix() {
-    if (problem_type != 8) { //TODO: Make sure you remove all magic numbers.
+    if (problem_type < 9) { //TODO: Make sure you remove all magic numbers.
         ui::InputInt("Enter dimension",  &kDimension);
-        ui::InputText("Input matrix", &input_string);
-        str_mat = input_string;
+        ui::InputText("Input matrix (row wise)", &input_string);
     } else {
         ui::InputInt("Enter dimension",  &kDimension);
-        ui::InputText("Input first matrix", &input_string);
-        ui::InputText("Input second matrix", &input_string2);
-        str_mat = input_string;
+        ui::InputText("Input first matrix (row wise)", &input_string);
+        ui::InputText("Input second matrix (row wise)", &input_string2);
         str_mat2 = input_string2;
     }
+    str_mat = input_string;
 }
 
 
 void MatrixApp::String_To_Matrix() {
     int mat_size = kDimension *kDimension;
-    if (problem_type != 8 && str_mat.size() == mat_size * 2 && mat_size != 0) { // <= size * 2
+    if (problem_type < 9 && str_mat.size() == mat_size * 2 && mat_size != 0) { // <= size * 2
         //TODO: Make dynamic.
         //When the computation only needs one matrix.
         std::istringstream ss(str_mat);

@@ -11,6 +11,7 @@
 #include <Eigen/src/Core/Matrix.h>
 
 using Eigen::MatrixXd;
+using Eigen::VectorXd;
 using std::string;
 class Computations {
 
@@ -25,12 +26,12 @@ public:
     static MatrixXd ComputeColSpace(MatrixXd matrix);
     static MatrixXd ComputeQ(const MatrixXd& matrix);
     static MatrixXd ComputeR(const MatrixXd& matrix);
-    static MatrixXd ComputeDotProduct(MatrixXd matrix1, MatrixXd matrix2);
-    static MatrixXd ComputeEigenValues(MatrixXd matrix);
+    static double ComputeDotProduct(MatrixXd matrix1, MatrixXd matrix2, int dim);
+    static VectorXd ComputeEigenValues(MatrixXd matrix);
     static MatrixXd ComputeEigenVectors(MatrixXd matrix);
-    void setDimension(int dim);
+    static void setDimension(int dim);
  private:
     typedef Eigen::Matrix<double, 3, 3 > M3X3;
-    int kDimension;
+
 };
 #endif //FINALPROJECT_COMPUTATIONS_H

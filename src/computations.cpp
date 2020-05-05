@@ -7,14 +7,13 @@
 #include <iostream>
 #include <Eigen/QR>
 #include <Eigen/Householder>
+#include <Eigen/Eigenvalues>
 
 
 using Eigen::MatrixXd;
 using std::string;
 
-  void Computations::setDimension(int dim) {
-      kDimension = dim;
-  }
+
   MatrixXd Computations::ComputeL(MatrixXd m) {
      typedef Eigen::Matrix<double, 3, 3 > L_Matrix;
      Eigen::FullPivLU<L_Matrix> lu(m);
@@ -86,9 +85,24 @@ using std::string;
       return Q;
   }
 
-  MatrixXd Computations::ComputeDotProduct(MatrixXd matrix1, MatrixXd matrix2) {
-      for (int i < MatrixApp::)
+  double Computations::ComputeDotProduct(MatrixXd matrix1, MatrixXd matrix2, int dim) {
+      double product = 0;
+      for (int i = 0; i < dim; i++) {
+          for (int j = 0; j < dim; j++) {
+              product += matrix1(i, j) * matrix2(i, j);
+          }
+      }
+      return product;
   }
+
+  VectorXd Computations::ComputeEigenValues(MatrixXd matrix) {
+      Eigen::EigenSolver<MatrixXd> es(matrix);
+      return es.eigenvalues();
+  }
+
+
+
+
 
 
 

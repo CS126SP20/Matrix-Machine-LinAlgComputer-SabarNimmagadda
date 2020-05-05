@@ -12,7 +12,6 @@ enum class AppState {
     kSelecting,
     kInputtingData,
     kSolved,
-    kDisplayed,
 };
 class MatrixApp : public cinder::app::App {
  public:
@@ -31,9 +30,8 @@ private:
   void DrawMultiplicationAnswer(MatrixXd matrix1, MatrixXd matrix2);
   void DrawInverseAnswer(const MatrixXd& matrix);
   void DrawQRAnswer(const MatrixXd& matrix);
+  void DrawDotProductAnswer(MatrixXd matrix1, MatrixXd matrix2);
   void InputMatrix();
-  void ReInputMatrix();
-  void ResetData();
   void String_To_Matrix();
   void DrawBackground() const;
   void PrintText(const std::string& text, const cinder::Color color, const cinder::ivec2& size,
