@@ -100,7 +100,10 @@ using std::string;
       return es.eigenvalues();
   }
 
-
+  MatrixXd Computations::ComputeEigenVectors(MatrixXd matrix) {
+      Eigen::EigenSolver<MatrixXd> es(matrix);
+      return es.eigenvectors();
+  }
 
 
 
