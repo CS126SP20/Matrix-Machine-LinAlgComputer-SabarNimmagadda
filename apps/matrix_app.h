@@ -31,6 +31,11 @@ private:
   void DrawInverseAnswer(const MatrixXd& matrix);
   void DrawQRAnswer(const MatrixXd& matrix);
   void DrawDotProductAnswer(MatrixXd matrix1, MatrixXd matrix2);
+  void DrawEigenVectorsAnswer(MatrixXd matrix);
+  void DrawEigenValuesAnswer(MatrixXd matrix);
+  void DrawDeterminantAnswer(const MatrixXd& matrix);
+  void DrawRowSpaceAnswer(MatrixXd matrix);
+  void DrawColSpaceAnswer(MatrixXd matrix);
   void InputMatrix();
   void String_To_Matrix();
   void DrawBackground() const;
@@ -38,16 +43,19 @@ private:
                  const cinder::vec2& loc);
   void BackToMenu();
   AppState state_;
-  std::vector<string> list_of_problems = {
-          "RREF",
-          "Row Space",
-          "Column Space",
-          "Null space",
-          "LU Decomposition",
-          "Permutation Matrix",
-          "Inverse",
-          "Matrix Multiplication",
-          "QR Decomposition"
+  enum class ProblemType {
+          RREF,
+          RowSpace,
+          ColumnSpace,
+          Nullspace,
+          LUDecomposition,
+          PermutationMatrix,
+          Inverse,
+          MatrixMultiplication,
+          QRDecomposition,
+          Determinant,
+          EigenValues,
+          EigenVectors
   };
     typedef Eigen::Matrix<double, 3, 3 > M3X3;
     M3X3 test_mat;

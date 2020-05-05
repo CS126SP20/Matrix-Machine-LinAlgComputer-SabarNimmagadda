@@ -81,7 +81,7 @@ void MatrixApp::draw() {
                     state_= AppState::kInputtingData;
                 }
                 if (ui::MenuItem( "Matrix Multiplication")) {
-                    problem_type = 9;
+                    problem_type = 13;
                     state_ = AppState::kInputtingData;
                 }
                 if (ui::MenuItem("QR Decomposition")) {
@@ -89,7 +89,19 @@ void MatrixApp::draw() {
                     state_ = AppState::kInputtingData;
                 }
                 if (ui::MenuItem("Dot Product")) {
+                    problem_type = 12;
+                    state_ = AppState::kInputtingData;
+                }
+                if (ui::MenuItem("Eigen Vectors")) {
                     problem_type = 10;
+                    state_ = AppState::kInputtingData;
+                }
+                if (ui::MenuItem("Eigen Values")) {
+                    problem_type = 9;
+                    state_ = AppState::kInputtingData;
+                }
+                if (ui::MenuItem("Determinant")) {
+                    problem_type = 11;
                     state_ = AppState::kInputtingData;
                 }
                 ui::EndMenu();
@@ -113,13 +125,28 @@ void MatrixApp::draw() {
             DrawRREFAnswer(in_mat1);
         }
         if (problem_type == 9) {
-            DrawMultiplicationAnswer(in_mat1, in_mat2);
+            DrawEigenValuesAnswer(in_mat1);
         }
         if (problem_type == 7) {
             DrawInverseAnswer(in_mat1);
         }
         if (problem_type == 10) {
+            DrawEigenVectorsAnswer(in_mat1);
+        }
+        if (problem_type == 12) {
             DrawDotProductAnswer(in_mat1, in_mat2);
+        }
+        if (problem_type == 13) {
+            DrawMultiplicationAnswer(in_mat1, in_mat2);
+        }
+        if (problem_type == 11) {
+            DrawDeterminantAnswer(in_mat1);
+        }
+        if (problem_type == 2) {
+            DrawRowSpaceAnswer(in_mat1);
+        }
+        if (problem_type == 3) {
+            DrawColSpaceAnswer(in_mat1);
         }
     }
 }
@@ -226,14 +253,69 @@ void MatrixApp::DrawQRAnswer(const MatrixXd& matrix) {
     PrintText("Your Q Matrix is",color,{500,500},{center.x-50,center.y - 50});
     PrintText(ss.str(), color, size , center);
     std::stringstream st;
-    st << Computations::ComputeU(matrix);
+    st << Computations::ComputeR(matrix);
     PrintText("Your R Matrix is",color,{500,500},{center.x-50,center.y + 150});
     PrintText(st.str(), color, size, {center.x, center.y + 200});
     BackToMenu();
 }
 
+void MatrixApp::DrawEigenVectorsAnswer(MatrixXd matrix) {
+    const cinder::vec2 center = getWindowCenter();
+    const cinder::ivec2 size = {500, 500};
+    const Color color = Color::white();
+    std::stringstream ss;
+    ss << Computations::ComputeEigenVectors(matrix);
+    PrintText("The Matrix of EigenVectors is",color,{500,500},{center.x-50,center.y - 50});
+    PrintText(ss.str(), color, size , center);
+    BackToMenu();
+}
+
+void MatrixApp::DrawEigenValuesAnswer(MatrixXd matrix) {
+    const cinder::vec2 center = getWindowCenter();
+    const cinder::ivec2 size = {500, 500};
+    const Color color = Color::white();
+    std::stringstream ss;
+    ss << Computations::ComputeEigenValues(matrix);
+    PrintText("The Eigenvalues are",color,{500,500},{center.x-50,center.y - 50});
+    PrintText(ss.str(), color, size , center);
+    BackToMenu();
+}
+
+void MatrixApp::DrawDeterminantAnswer(const MatrixXd& matrix) {
+    const cinder::vec2 center = getWindowCenter();
+    const cinder::ivec2 size = {500, 500};
+    const Color color = Color::white();
+    std::stringstream ss;
+    ss << Computations::ComputeDeterminant(matrix);
+    PrintText("Your determinant is", color, {500,500},{center.x-50,center.y - 50});
+    PrintText(ss.str(), color, size, center);
+    BackToMenu();
+}
+
+void MatrixApp::DrawColSpaceAnswer(MatrixXd matrix) {
+    const cinder::vec2 center = getWindowCenter();
+    const cinder::ivec2 size = {500, 500};
+    const Color color = Color::white();
+    std::stringstream ss;
+    ss << Computations::ComputeColSpace(std::move(matrix));
+    PrintText("Your Column Space Matrix is", color, {500,500},{center.x-50,center.y - 50});
+    PrintText(ss.str(), color, size, center);
+    BackToMenu();
+}
+
+void MatrixApp::DrawRowSpaceAnswer(MatrixXd matrix) {
+    const cinder::vec2 center = getWindowCenter();
+    const cinder::ivec2 size = {500, 500};
+    const Color color = Color::white();
+    std::stringstream ss;
+    ss << Computations::ComputeRowSpace(std::move(matrix));
+    PrintText("Your Row Space Matrix is", color, {500,500},{center.x-50,center.y - 50});
+    PrintText(ss.str(), color, size, center);
+    BackToMenu();
+}
+
 void MatrixApp::InputMatrix() {
-    if (problem_type < 9) { //TODO: Make sure you remove all magic numbers.
+    if (problem_type < 12) { //TODO: Make sure you remove all magic numbers.
         ui::InputInt("Enter dimension",  &kDimension);
         ui::InputText("Input matrix (row wise)", &input_string);
     } else {
@@ -248,7 +330,7 @@ void MatrixApp::InputMatrix() {
 
 void MatrixApp::String_To_Matrix() {
     int mat_size = kDimension *kDimension;
-    if (problem_type < 9 && str_mat.size() == mat_size * 2 && mat_size != 0) { // <= size * 2
+    if (problem_type < 12 && str_mat.size() == mat_size * 2 && mat_size != 0) { // <= size * 2
         //TODO: Make dynamic.
         //When the computation only needs one matrix.
         std::istringstream ss(str_mat);

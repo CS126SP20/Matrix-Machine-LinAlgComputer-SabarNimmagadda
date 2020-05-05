@@ -95,19 +95,37 @@ using std::string;
       return product;
   }
 
-  VectorXd Computations::ComputeEigenValues(MatrixXd matrix) {
-      Eigen::EigenSolver<MatrixXd> es(matrix);
-      return es.eigenvalues();
+  VectorXcd Computations::ComputeEigenValues(const MatrixXd& matrix) {
+      VectorXcd ret = matrix.eigenvalues();
+      return ret;
   }
 
-  MatrixXd Computations::ComputeEigenVectors(MatrixXd matrix) {
+  MatrixXcd Computations::ComputeEigenVectors(const MatrixXd& matrix) {
       Eigen::EigenSolver<MatrixXd> es(matrix);
       return es.eigenvectors();
   }
 
+  int Computations::ComputeDeterminant(const MatrixXd& matrix) {
+      return matrix.determinant();
+  }
+  MatrixXd Computations::ComputeColSpace(MatrixXd matrix) {
+      Eigen::ColPivHouseholderQR<MatrixXd> qr(matrix);
+      MatrixXd new_mat;
+      for (auto i : qr.colsPermutation().indices()) {
+          new_mat.col(i) = matrix.col(i);
+      }
+      return new_mat;
+  }
 
-
-
+  MatrixXd Computations::ComputeRowSpace(MatrixXd matrix) {
+      MatrixXd transp = matrix.transpose();
+      Eigen::ColPivHouseholderQR<MatrixXd> qr(transp);
+      MatrixXd new_mat;
+      for (auto i : qr.colsPermutation().indices()) {
+          new_mat.col(i) = transp.col(i);
+      }
+      return new_mat;
+  }
 
 
 
