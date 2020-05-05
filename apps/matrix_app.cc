@@ -46,9 +46,9 @@ void MatrixApp::draw() {
     DrawBackground();
     const cinder::vec2 center = getWindowCenter();
     const cinder::ivec2 size = {500, 50};
-    const Color color = Color::black();
+    const Color color = Color::white();
     if (state_ == AppState::kSelecting) {
-        PrintText("WELCOME",color, size, {500,500});
+        PrintText("WELCOME",color, size, {100,50});
         ui::ScopedWindow window( "Choose problem", ImGuiWindowFlags_MenuBar );
         if( ui::BeginMenuBar() ){
             if( ui::BeginMenu( "Problem Type" )) {
@@ -345,7 +345,6 @@ void MatrixApp::String_To_Matrix() {
                 in_mat1(r, c) = elem;
             }
         }
-        std::cout << in_mat1;
         state_ = AppState::kSolved;
     } else if (str_mat.size() == mat_size * 2 && str_mat2.size() == mat_size * 2 && mat_size != 0){
         //Made else if instead of else, because size cannot be zero ever.
@@ -361,8 +360,6 @@ void MatrixApp::String_To_Matrix() {
                 in_mat2(r, c) = elem2;
             }
         }
-        std::cout << in_mat1 << std::endl;
-        std::cout << in_mat2;
         state_ = AppState::kSolved;
     }
 }
