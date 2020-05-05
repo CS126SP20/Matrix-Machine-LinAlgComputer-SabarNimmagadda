@@ -25,7 +25,6 @@ public:
     static MatrixXd ComputeMultiply(MatrixXd matrix1, MatrixXd matrix2);
     static MatrixXd ComputeRowSpace(MatrixXd matrix);
     static MatrixXd ComputeColSpace(MatrixXd matrix);
-    static MatrixXd ComputeNullSpace(MatrixXd matrix);
     static int ComputeDeterminant(const MatrixXd& matrix);
     static MatrixXd ComputeQ(const MatrixXd& matrix);
     static MatrixXd ComputeR(const MatrixXd& matrix);

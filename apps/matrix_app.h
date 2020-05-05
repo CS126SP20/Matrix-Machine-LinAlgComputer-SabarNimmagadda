@@ -34,20 +34,18 @@ private:
   void DrawEigenVectorsAnswer(MatrixXd matrix);
   void DrawEigenValuesAnswer(MatrixXd matrix);
   void DrawDeterminantAnswer(const MatrixXd& matrix);
-  void DrawRowSpaceAnswer(MatrixXd matrix);
-  void DrawColSpaceAnswer(MatrixXd matrix);
+  void DrawRowSpaceAnswer(const MatrixXd& matrix);
+  void DrawColSpaceAnswer(const MatrixXd& matrix);
   void InputMatrix();
   void String_To_Matrix();
   void DrawBackground() const;
   void PrintText(const std::string& text, const cinder::Color color, const cinder::ivec2& size,
                  const cinder::vec2& loc);
   void BackToMenu();
-  AppState state_;
   enum class ProblemType {
           RREF,
           RowSpace,
           ColumnSpace,
-          Nullspace,
           LUDecomposition,
           PermutationMatrix,
           Inverse,
@@ -55,17 +53,19 @@ private:
           QRDecomposition,
           Determinant,
           EigenValues,
-          EigenVectors
+          EigenVectors,
+          DotProduct
   };
-    typedef Eigen::Matrix<double, 3, 3 > M3X3;
+    typedef Eigen::Matrix<double, 3, 3> M3X3;
     M3X3 test_mat;
-    int problem_type;
-    M3X3 in_mat1;
-    M3X3 in_mat2;
     std::string input_string = "";
     std::string input_string2 = "";
     std::string str_mat;
     std::string str_mat2;
+    AppState state_;
+    ProblemType problemType;
+    M3X3 in_mat1;
+    M3X3 in_mat2;
 };
 
 }  // namespace myapp

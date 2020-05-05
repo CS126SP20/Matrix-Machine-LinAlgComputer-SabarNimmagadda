@@ -53,55 +53,51 @@ void MatrixApp::draw() {
         if( ui::BeginMenuBar() ){
             if( ui::BeginMenu( "Problem Type" )) {
                 if (ui::MenuItem( "RREF" )) {
-                    problem_type = 1;
+                    problemType = ProblemType::RREF;
                     state_= AppState::kInputtingData;
                 }
                 if (ui::MenuItem( "Row Space" )) {
-                    problem_type = 2;
+                    problemType = ProblemType::RowSpace;
                     state_= AppState::kInputtingData;
                 }
                 if (ui::MenuItem( "Column Space")) {
-                    problem_type = 3;
-                    state_= AppState::kInputtingData;
-                }
-                if (ui::MenuItem("Null space")) {
-                    problem_type = 4;
+                    problemType = ProblemType::ColumnSpace;
                     state_= AppState::kInputtingData;
                 }
                 if (ui::MenuItem("LU Decomposition")) {
-                    problem_type = 5;
+                    problemType = ProblemType::LUDecomposition;
                     state_= AppState::kInputtingData;
                 }
                 if (ui::MenuItem( "Permutation Matrix")) {
-                    problem_type = 6;
+                    problemType = ProblemType::PermutationMatrix;
                     state_= AppState::kInputtingData;
                 }
                 if (ui::MenuItem( "Inverse")) {
-                    problem_type = 7;
+                    problemType = ProblemType::Inverse;
                     state_= AppState::kInputtingData;
                 }
                 if (ui::MenuItem( "Matrix Multiplication")) {
-                    problem_type = 13;
+                    problemType = ProblemType::MatrixMultiplication;
                     state_ = AppState::kInputtingData;
                 }
                 if (ui::MenuItem("QR Decomposition")) {
-                    problem_type = 8;
+                    problemType = ProblemType::QRDecomposition;
                     state_ = AppState::kInputtingData;
                 }
                 if (ui::MenuItem("Dot Product")) {
-                    problem_type = 12;
+                    problemType = ProblemType::DotProduct;
                     state_ = AppState::kInputtingData;
                 }
                 if (ui::MenuItem("Eigen Vectors")) {
-                    problem_type = 10;
+                    problemType = ProblemType::EigenVectors;
                     state_ = AppState::kInputtingData;
                 }
                 if (ui::MenuItem("Eigen Values")) {
-                    problem_type = 9;
+                    problemType = ProblemType::EigenValues;
                     state_ = AppState::kInputtingData;
                 }
                 if (ui::MenuItem("Determinant")) {
-                    problem_type = 11;
+                    problemType = ProblemType::Determinant;
                     state_ = AppState::kInputtingData;
                 }
                 ui::EndMenu();
@@ -112,40 +108,40 @@ void MatrixApp::draw() {
         ui::SetWindowSize("Choose problem", vec2);
     }
     if (state_ == AppState::kSolved) {
-        if (problem_type == 8) {
+        if (problemType == ProblemType::QRDecomposition) {
             DrawQRAnswer(in_mat1);
         }
-        if (problem_type == 5) {
+        if (problemType == ProblemType::LUDecomposition) {
             DrawLUAnswer(in_mat1);
         }
-        if (problem_type == 6) {
+        if (problemType == ProblemType::PermutationMatrix) {
             DrawPermutationAnswer(in_mat1);
         }
-        if (problem_type == 1) {
+        if (problemType == ProblemType::RREF) {
             DrawRREFAnswer(in_mat1);
         }
-        if (problem_type == 9) {
+        if (problemType == ProblemType::EigenValues) {
             DrawEigenValuesAnswer(in_mat1);
         }
-        if (problem_type == 7) {
+        if (problemType == ProblemType::Inverse) {
             DrawInverseAnswer(in_mat1);
         }
-        if (problem_type == 10) {
+        if (problemType == ProblemType::EigenVectors) {
             DrawEigenVectorsAnswer(in_mat1);
         }
-        if (problem_type == 12) {
+        if (problemType == ProblemType::DotProduct) {
             DrawDotProductAnswer(in_mat1, in_mat2);
         }
-        if (problem_type == 13) {
+        if (problemType == ProblemType::MatrixMultiplication) {
             DrawMultiplicationAnswer(in_mat1, in_mat2);
         }
-        if (problem_type == 11) {
+        if (problemType == ProblemType::Determinant) {
             DrawDeterminantAnswer(in_mat1);
         }
-        if (problem_type == 2) {
+        if (problemType == ProblemType::RowSpace) {
             DrawRowSpaceAnswer(in_mat1);
         }
-        if (problem_type == 3) {
+        if (problemType == ProblemType::ColumnSpace) {
             DrawColSpaceAnswer(in_mat1);
         }
     }
@@ -292,36 +288,42 @@ void MatrixApp::DrawDeterminantAnswer(const MatrixXd& matrix) {
     BackToMenu();
 }
 
-void MatrixApp::DrawColSpaceAnswer(MatrixXd matrix) {
+void MatrixApp::DrawColSpaceAnswer(const MatrixXd& matrix) {
     const cinder::vec2 center = getWindowCenter();
     const cinder::ivec2 size = {500, 500};
     const Color color = Color::white();
     std::stringstream ss;
-    ss << Computations::ComputeColSpace(std::move(matrix));
+    try {
+        Computations::ComputeColSpace(matrix);
+        Computations::ComputeRowSpace(matrix);
+    } catch (int a) {
+
+    }
+    ss << Computations::ComputeEigenVectors(matrix);
     PrintText("Your Column Space Matrix is", color, {500,500},{center.x-50,center.y - 50});
     PrintText(ss.str(), color, size, center);
     BackToMenu();
 }
 
-void MatrixApp::DrawRowSpaceAnswer(MatrixXd matrix) {
+void MatrixApp::DrawRowSpaceAnswer(const MatrixXd& matrix) {
     const cinder::vec2 center = getWindowCenter();
     const cinder::ivec2 size = {500, 500};
     const Color color = Color::white();
     std::stringstream ss;
-    ss << Computations::ComputeRowSpace(std::move(matrix));
+    ss << Computations::ComputeEigenVectors(matrix);
     PrintText("Your Row Space Matrix is", color, {500,500},{center.x-50,center.y - 50});
     PrintText(ss.str(), color, size, center);
     BackToMenu();
 }
 
 void MatrixApp::InputMatrix() {
-    if (problem_type < 12) { //TODO: Make sure you remove all magic numbers.
+    if (problemType != ProblemType::DotProduct && problemType != ProblemType::MatrixMultiplication) {
         ui::InputInt("Enter dimension",  &kDimension);
-        ui::InputText("Input matrix (row wise)", &input_string);
+        ui::InputText("Input matrix", &input_string);
     } else {
         ui::InputInt("Enter dimension",  &kDimension);
-        ui::InputText("Input first matrix (row wise)", &input_string);
-        ui::InputText("Input second matrix (row wise)", &input_string2);
+        ui::InputText("Input first matrix", &input_string);
+        ui::InputText("Input second matrix", &input_string2);
         str_mat2 = input_string2;
     }
     str_mat = input_string;
@@ -330,7 +332,9 @@ void MatrixApp::InputMatrix() {
 
 void MatrixApp::String_To_Matrix() {
     int mat_size = kDimension *kDimension;
-    if (problem_type < 12 && str_mat.size() == mat_size * 2 && mat_size != 0) { // <= size * 2
+    if ( problemType != ProblemType::DotProduct
+     && problemType != ProblemType::MatrixMultiplication
+     && str_mat.size() == mat_size * 2 && mat_size != 0) { // <= size * 2
         //TODO: Make dynamic.
         //When the computation only needs one matrix.
         std::istringstream ss(str_mat);
@@ -344,6 +348,7 @@ void MatrixApp::String_To_Matrix() {
         std::cout << in_mat1;
         state_ = AppState::kSolved;
     } else if (str_mat.size() == mat_size * 2 && str_mat2.size() == mat_size * 2 && mat_size != 0){
+        //Made else if instead of else, because size cannot be zero ever.
         std::istringstream ss1(str_mat);
         std::istringstream ss2(str_mat2);
         for (int r = 0; r < kDimension; r++) {
@@ -359,8 +364,6 @@ void MatrixApp::String_To_Matrix() {
         std::cout << in_mat1 << std::endl;
         std::cout << in_mat2;
         state_ = AppState::kSolved;
-    } else {
-        //TODO: Make and change to error state;
     }
 }
 
