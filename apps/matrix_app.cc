@@ -48,104 +48,115 @@ void MatrixApp::draw() {
     const cinder::ivec2 size = {500, 50};
     const Color color = Color::white();
     if (state_ == AppState::kSelecting) {
-        PrintText("WELCOME",color, size, {100,50});
-        ui::ScopedWindow window( "Choose problem", ImGuiWindowFlags_MenuBar );
-        if( ui::BeginMenuBar() ){
-            if( ui::BeginMenu( "Problem Type" )) {
-                if (ui::MenuItem( "RREF" )) {
-                    problemType = ProblemType::RREF;
-                    state_= AppState::kInputtingData;
-                }
-                if (ui::MenuItem( "Row Space" )) {
-                    problemType = ProblemType::RowSpace;
-                    state_= AppState::kInputtingData;
-                }
-                if (ui::MenuItem( "Column Space")) {
-                    problemType = ProblemType::ColumnSpace;
-                    state_= AppState::kInputtingData;
-                }
-                if (ui::MenuItem("LU Decomposition")) {
-                    problemType = ProblemType::LUDecomposition;
-                    state_= AppState::kInputtingData;
-                }
-                if (ui::MenuItem( "Permutation Matrix")) {
-                    problemType = ProblemType::PermutationMatrix;
-                    state_= AppState::kInputtingData;
-                }
-                if (ui::MenuItem( "Inverse")) {
-                    problemType = ProblemType::Inverse;
-                    state_= AppState::kInputtingData;
-                }
-                if (ui::MenuItem( "Matrix Multiplication")) {
-                    problemType = ProblemType::MatrixMultiplication;
-                    state_ = AppState::kInputtingData;
-                }
-                if (ui::MenuItem("QR Decomposition")) {
-                    problemType = ProblemType::QRDecomposition;
-                    state_ = AppState::kInputtingData;
-                }
-                if (ui::MenuItem("Dot Product")) {
-                    problemType = ProblemType::DotProduct;
-                    state_ = AppState::kInputtingData;
-                }
-                if (ui::MenuItem("Eigen Vectors")) {
-                    problemType = ProblemType::EigenVectors;
-                    state_ = AppState::kInputtingData;
-                }
-                if (ui::MenuItem("Eigen Values")) {
-                    problemType = ProblemType::EigenValues;
-                    state_ = AppState::kInputtingData;
-                }
-                if (ui::MenuItem("Determinant")) {
-                    problemType = ProblemType::Determinant;
-                    state_ = AppState::kInputtingData;
-                }
-                ui::EndMenu();
-            }
-            ui::EndMenuBar();
-        }
-        const ImVec2 vec2(500, 500);
-        ui::SetWindowSize("Choose problem", vec2);
+        PrintText("WELCOME", color, size, {100, 50});
+        CreateMenu();
     }
     if (state_ == AppState::kSolved) {
-        if (problemType == ProblemType::QRDecomposition) {
-            DrawQRAnswer(in_mat1);
-        }
-        if (problemType == ProblemType::LUDecomposition) {
-            DrawLUAnswer(in_mat1);
-        }
-        if (problemType == ProblemType::PermutationMatrix) {
-            DrawPermutationAnswer(in_mat1);
-        }
-        if (problemType == ProblemType::RREF) {
-            DrawRREFAnswer(in_mat1);
-        }
-        if (problemType == ProblemType::EigenValues) {
-            DrawEigenValuesAnswer(in_mat1);
-        }
-        if (problemType == ProblemType::Inverse) {
-            DrawInverseAnswer(in_mat1);
-        }
-        if (problemType == ProblemType::EigenVectors) {
-            DrawEigenVectorsAnswer(in_mat1);
-        }
-        if (problemType == ProblemType::DotProduct) {
-            DrawDotProductAnswer(in_mat1, in_mat2);
-        }
-        if (problemType == ProblemType::MatrixMultiplication) {
-            DrawMultiplicationAnswer(in_mat1, in_mat2);
-        }
-        if (problemType == ProblemType::Determinant) {
-            DrawDeterminantAnswer(in_mat1);
-        }
-        if (problemType == ProblemType::RowSpace) {
-            DrawRowSpaceAnswer(in_mat1);
-        }
-        if (problemType == ProblemType::ColumnSpace) {
-            DrawColSpaceAnswer(in_mat1);
-        }
+        DrawAnswer();
     }
 }
+
+
+void MatrixApp::CreateMenu() {
+    ui::ScopedWindow window( "Choose problem", ImGuiWindowFlags_MenuBar );
+    if( ui::BeginMenuBar() ){
+        if( ui::BeginMenu( "Problem Type" )) {
+            if (ui::MenuItem( "RREF" )) {
+                problemType = ProblemType::RREF;
+                state_= AppState::kInputtingData;
+            }
+            if (ui::MenuItem( "Row Space" )) {
+                problemType = ProblemType::RowSpace;
+                state_= AppState::kInputtingData;
+            }
+            if (ui::MenuItem( "Column Space")) {
+                problemType = ProblemType::ColumnSpace;
+                state_= AppState::kInputtingData;
+            }
+            if (ui::MenuItem("LU Decomposition")) {
+                problemType = ProblemType::LUDecomposition;
+                state_= AppState::kInputtingData;
+            }
+            if (ui::MenuItem( "Permutation Matrix")) {
+                problemType = ProblemType::PermutationMatrix;
+                state_= AppState::kInputtingData;
+            }
+            if (ui::MenuItem( "Inverse")) {
+                problemType = ProblemType::Inverse;
+                state_= AppState::kInputtingData;
+            }
+            if (ui::MenuItem( "Matrix Multiplication")) {
+                problemType = ProblemType::MatrixMultiplication;
+                state_ = AppState::kInputtingData;
+            }
+            if (ui::MenuItem("QR Decomposition")) {
+                problemType = ProblemType::QRDecomposition;
+                state_ = AppState::kInputtingData;
+            }
+            if (ui::MenuItem("Dot Product")) {
+                problemType = ProblemType::DotProduct;
+                state_ = AppState::kInputtingData;
+            }
+            if (ui::MenuItem("Eigen Vectors")) {
+                problemType = ProblemType::EigenVectors;
+                state_ = AppState::kInputtingData;
+            }
+            if (ui::MenuItem("Eigen Values")) {
+                problemType = ProblemType::EigenValues;
+                state_ = AppState::kInputtingData;
+            }
+            if (ui::MenuItem("Determinant")) {
+                problemType = ProblemType::Determinant;
+                state_ = AppState::kInputtingData;
+            }
+            ui::EndMenu();
+        }
+        ui::EndMenuBar();
+    }
+    const ImVec2 vec2(500, 500);
+    ui::SetWindowSize("Choose problem", vec2);
+}
+
+
+void MatrixApp::DrawAnswer() {
+    if (problemType == ProblemType::QRDecomposition) {
+        DrawQRAnswer(in_mat1);
+    }
+    if (problemType == ProblemType::LUDecomposition) {
+        DrawLUAnswer(in_mat1);
+    }
+    if (problemType == ProblemType::PermutationMatrix) {
+        DrawPermutationAnswer(in_mat1);
+    }
+    if (problemType == ProblemType::RREF) {
+        DrawRREFAnswer(in_mat1);
+    }
+    if (problemType == ProblemType::EigenValues) {
+        DrawEigenValuesAnswer(in_mat1);
+    }
+    if (problemType == ProblemType::Inverse) {
+        DrawInverseAnswer(in_mat1);
+    }
+    if (problemType == ProblemType::EigenVectors) {
+        DrawEigenVectorsAnswer(in_mat1);
+    }
+    if (problemType == ProblemType::DotProduct) {
+        DrawDotProductAnswer(in_mat1, in_mat2);
+    }
+    if (problemType == ProblemType::MatrixMultiplication) {
+        DrawMultiplicationAnswer(in_mat1, in_mat2);
+    }
+    if (problemType == ProblemType::Determinant) {
+        DrawDeterminantAnswer(in_mat1);
+    }
+    if (problemType == ProblemType::RowSpace) {
+        DrawRowSpaceAnswer(in_mat1);
+    }
+    if (problemType == ProblemType::ColumnSpace) {
+        DrawColSpaceAnswer(in_mat1);
+    }
+}
+
 
 void MatrixApp::keyDown(KeyEvent event) {
 }
@@ -293,13 +304,7 @@ void MatrixApp::DrawColSpaceAnswer(const MatrixXd& matrix) {
     const cinder::ivec2 size = {500, 500};
     const Color color = Color::white();
     std::stringstream ss;
-    try {
-        Computations::ComputeColSpace(matrix);
-        Computations::ComputeRowSpace(matrix);
-    } catch (int a) {
-
-    }
-    ss << Computations::ComputeEigenVectors(matrix);
+    ss << Computations::ComputeEigenVectors(matrix.inverse());
     PrintText("Your Column Space Matrix is", color, {500,500},{center.x-50,center.y - 50});
     PrintText(ss.str(), color, size, center);
     BackToMenu();

@@ -141,6 +141,18 @@ private:
   void BackToMenu();
 
   /**
+   * This function calls all the other draw answer functions, to make the code inside Draw()
+   * more readable and concise.
+   */
+  void DrawAnswer();
+
+  /**
+   * This function creates the menu that was initially created within Draw(),
+   * which sets the problem type for different click actions.
+   */
+  void CreateMenu();
+
+  /**
    * This is the enum class for every type of problem.
    */
   enum class ProblemType {

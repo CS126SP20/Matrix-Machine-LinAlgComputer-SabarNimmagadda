@@ -67,8 +67,8 @@ using std::string;
   }
 
   MatrixXd Computations::ComputeMultiply(MatrixXd matrix1, MatrixXd matrix2) {
-      if (m.cols() == n.rows()) {
-          return m*n;
+      if (matrix1.cols() == matrix2.rows()) {
+          return matrix1*matrix2;
       }
   }
 
