@@ -1,6 +1,6 @@
-# [THE MATRIX MACHINE]
+# THE MATRIX MACHINE
 
-Author: [Sabar Nimmagadda]
+Author: Sabar Nimmagadda
 
   The project has the basic functionality of being able to solve several types of problems in the field of linear algebra, for square matrices. 
 The basic structure is built around the user inputting the type of problem they need solved, and the data required to
