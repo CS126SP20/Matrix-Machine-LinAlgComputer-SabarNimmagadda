@@ -22,7 +22,6 @@ using cinder::Rectf;
 using cinder::TextBox;
 using std::string;
 const char kNormalFont[] = "Arial";
-const char kBoldFont[] = "Arial Bold";
 
 MatrixApp::MatrixApp()
     : state_{AppState::kSelecting} {}

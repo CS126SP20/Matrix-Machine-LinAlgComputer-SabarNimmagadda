@@ -8,6 +8,10 @@
 using std::string;
 using Eigen::MatrixXd;
 namespace matrixapp {
+
+/**
+ * The enums for the state of the program.
+ */
 enum class AppState {
     kSelecting,
     kInputtingData,
