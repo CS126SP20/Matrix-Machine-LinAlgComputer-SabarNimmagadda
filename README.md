@@ -4,6 +4,7 @@
 [![docs](https://img.shields.io/badge/docs-yes-brightgreen)](docs/README.md)
 
 The Matrix Machine is a program that computes the answer to several types of problems in linear algebra that involve matrix inputs. 
+![](images/finalprojectscreenshot.png)
 
 ## Computations
 The computations that are included are - 
