@@ -26,7 +26,8 @@
     - Added function documentation.
     - Might add some extensions to the project, like making the matrix input not only for square matrices.
     - Still need to finalize code and make project perfectly presentable.
-    - Need to work on README.md        
+    - Need to work on README.md
+- **5.6.2020** -Completed project.        
                  
 
 

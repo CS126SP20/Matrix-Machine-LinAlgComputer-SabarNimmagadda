@@ -339,7 +339,6 @@ void MatrixApp::String_To_Matrix() {
     if ( problemType != ProblemType::DotProduct
      && problemType != ProblemType::MatrixMultiplication
      && str_mat.size() == mat_size * 2 && mat_size != 0) { // <= size * 2
-        //TODO: Make dynamic.
         //When the computation only needs one matrix.
         std::istringstream ss(str_mat);
         for (int r = 0; r < kDimension; r++) {
